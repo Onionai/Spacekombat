@@ -6,7 +6,6 @@ namespace Onion_AI
     {
         //Manager
         protected PlayerManager playerManager;
-        public bool shoot;
 
         // Update is called once per frame
         public override void Awake()
@@ -15,29 +14,31 @@ namespace Onion_AI
             playerManager = characterManager as PlayerManager;
         }
 
-        public override void CharacterCombat_Update()
+        public override void CharacterCombat_Update(float delta)
         {
-            if(shoot)
+            deltaTime += delta;
+            float delayShotTime = 1 / fireRate;
+
+            if(deltaTime < delayShotTime)
             {
-                Shoot();
+                return;
             }
-            
-            base.CharacterCombat_Update();
+            base.CharacterCombat_Update(delta);
         }
 
-        protected override void Shoot()
+        protected override void Shoot(float delta)
         {
-            foreach(Transform firePoint in firePoints)
-            {
-                Fire(firePoint);
-            }
+            base.Shoot(delta);
         }
 
         protected override void Fire(Transform firePoint)
         {
-            WeaponManager fireObject = playerManager.gameManager.levelSpawners.bulletPool.Get();
-
-            fireObject.Initialize(firePoint, this);
+            if(playerManager.isMoving != true)
+            {
+                return;
+            }
+            
+            base.Fire(firePoint);
         }
     }
 }

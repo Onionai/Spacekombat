@@ -31,6 +31,12 @@ namespace Onion_AI
 
         public override void TakeDamage(float damageValue)
         {
+            if(currentHealth <= 0.0f)
+            {
+                characterManager.isDead = true;
+                //Show Exit Dialog
+                return;
+            }
             base.TakeDamage(damageValue);
         }
 

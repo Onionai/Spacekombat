@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Onion_AI
@@ -6,29 +7,48 @@ namespace Onion_AI
     {
         //Manager
         public CharacterManager characterManager {get; private set;}
+        protected float deltaTime;
 
-        //Parameters
-        [SerializeField] protected Transform[] firePoints;
+        [Header("Parameters")]
+        [SerializeField] protected float fireRate;
+        [SerializeField] protected List<Transform> firePoints = new();
+        [field: SerializeField] public float damageModifier {get; private set;}
 
-        // Update is called once per frame
         public virtual void Awake()
         {
-            characterManager = GetComponent<CharacterManager>();
+            GetFirePoints();
+            characterManager = GetComponentInParent<CharacterManager>();
         }
 
-        public virtual void CharacterCombat_Update()
+        public virtual void CharacterCombat_Update(float delta)
         {
-        
+            Shoot(delta);
+            deltaTime = 0.0f;
         }
 
-        protected virtual void Shoot()
+        protected virtual void Shoot(float delta)
         {
-            
+            foreach(Transform firePoint in firePoints)
+            {
+                Fire(firePoint);
+            }
+        }
+
+        private void GetFirePoints()
+        {
+            for(int index = 0; index < transform.childCount; index++)
+            {
+                Transform firePoint = transform.GetChild(index);
+                firePoints.Add(firePoint);
+            }
         }
 
         protected virtual void Fire(Transform firePoint)
         {
-            
+            WeaponManager fireObject = characterManager.gameManager.levelSpawners.bulletPool.Get();
+
+            fireObject.levelSpawner = characterManager.gameManager.levelSpawners;
+            fireObject.Initialize(firePoint, this);
         }
     }
 }

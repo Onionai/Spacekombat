@@ -8,27 +8,30 @@ namespace Onion_AI
         public Rigidbody2D rigidBody {get; private set;}
 
         //OnionAI Components
-        public UIBar healthBar {get; private set;}
+        public UIBar healthBarUI {get; private set;}
+        public GameManager gameManager {get; protected set;}
         public CharacterCombat characterCombat {get; private set;}
         public CharacterMovement characterMovement {get; private set;}
         public CharacterStatistics characterStatistics {get; private set;}
 
         [Header("Status")]
         public bool isDead;
+        public bool isMoving;
+        [field: SerializeField] public CharacterType characterType {get; private set;} = CharacterType.Enemy;
     
         protected virtual void Awake()
         {
-            healthBar = GetComponent<UIBar>();
             rigidBody = GetComponent<Rigidbody2D>();
+            healthBarUI = GetComponentInChildren<UIBar>();
 
-            characterCombat = GetComponent<CharacterCombat>();
             characterMovement = GetComponent<CharacterMovement>();
             characterStatistics = GetComponent<CharacterStatistics>();
+            characterCombat = GetComponentInChildren<CharacterCombat>();
         }
 
         protected virtual void Start()
         {
-
+            characterStatistics?.ResetHealth();
         }
 
         protected virtual void FixedUpdate()
@@ -47,8 +50,12 @@ namespace Onion_AI
             {
                 return;
             }
-            characterCombat.CharacterCombat_Update();
+
+            float delta = Time.deltaTime;
+
+            characterCombat.CharacterCombat_Update(delta);
             characterStatistics.CharacterStatistics_Update();
+            characterMovement.CharacterMovement_Update(delta);
         }
     }
 }

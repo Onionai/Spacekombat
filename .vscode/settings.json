@@ -56,8 +56,10 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Onion AI Jet Game.sln",
+    "dotnet.defaultSolution": "Spacekombat.sln",
     "cSpell.words": [
-        "Rigidbody"
+        "Mathf",
+        "Rigidbody",
+        "Spawnable"
     ]
 }

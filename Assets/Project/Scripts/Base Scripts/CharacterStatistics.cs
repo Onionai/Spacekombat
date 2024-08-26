@@ -7,8 +7,8 @@ namespace Onion_AI
         protected CharacterManager characterManager;
 
         //Parameters
-        private float healthLevel;
-        public float currentHealth {get; private set;}
+        [SerializeField] private float healthLevel;
+        public float currentHealth {get; protected set;}
 
         protected virtual void Awake()
         {
@@ -32,20 +32,14 @@ namespace Onion_AI
             characterManager.isDead = false;
             currentHealth = healthLevel * 10.0f;
 
-            characterManager.healthBar.SetMaxValue(currentHealth);
-            characterManager.healthBar.SetCurrentValue(currentHealth);
+            characterManager.healthBarUI?.SetMaxValue(currentHealth);
+            characterManager.healthBarUI?.SetCurrentValue(currentHealth);
         }
 
         public virtual void TakeDamage(float damageValue)
         {
-            if(currentHealth <= 0.0f)
-            {
-                currentHealth = 0.0f;
-                characterManager.isDead = true;
-                return;
-            }
             currentHealth -= damageValue;
-            characterManager.healthBar.SetCurrentValue(currentHealth);
+            characterManager.healthBarUI.SetCurrentValue(currentHealth);
         }
 
         protected virtual void RegenerateStatisticProcedurally()

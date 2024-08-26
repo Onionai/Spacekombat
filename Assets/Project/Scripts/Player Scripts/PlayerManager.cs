@@ -5,7 +5,6 @@ namespace Onion_AI
     public class PlayerManager : CharacterManager
     {
         //Onion_AI Components
-        public GameManager gameManager {get; private set;}
         public PlayerInput playerInput {get; private set;}
         public PlayerCombat playerCombat {get; private set;}
         public PlayerMovement playerMovement {get; private set;}

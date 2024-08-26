@@ -1,8 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 namespace Onion_AI
 {
-
+    public enum CharacterType
+    {
+        Enemy,
+        Player
+    }
+    
+    public enum PathControllerType
+    {
+        FourWayPath,
+        ThreeWayPath,
+        TwoWayPath,
+    }
 }

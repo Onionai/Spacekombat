@@ -4,16 +4,33 @@ namespace Onion_AI
 {
     public class EnemyCombat : CharacterCombat
     {
-        // Start is called before the first frame update
-        void Start()
+        protected EnemyManager enemyManager;
+
+        public override void Awake()
         {
-        
+            base.Awake();
+            enemyManager = characterManager as EnemyManager;
         }
 
-        // Update is called once per frame
-        void Update()
+        public override void CharacterCombat_Update(float delta)
         {
-        
+            deltaTime += delta;
+            float delayShotTime = 1 / fireRate;
+            if(deltaTime < delayShotTime)
+            {
+                return;
+            }
+            base.CharacterCombat_Update(delta);
+        }
+
+        protected override void Shoot(float delta)
+        {
+            base.Shoot(delta);
+        }
+
+        protected override void Fire(Transform firePoint)
+        {
+            base.Fire(firePoint);
         }
     }
 }

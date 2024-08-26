@@ -47,6 +47,8 @@ namespace Onion_AI
             verticalMoveAmount = movementInput.y;
             horizontalMoveAmount = movementInput.x;
             totalMoveAmount = Mathf.Clamp01(Mathf.Abs(verticalMoveAmount) + Mathf.Abs(horizontalMoveAmount));
+
+            playerManager.isMoving = (totalMoveAmount > 0.01f);
         }
     }
 }

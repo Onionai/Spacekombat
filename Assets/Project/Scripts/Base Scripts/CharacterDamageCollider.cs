@@ -1,19 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Onion_AI
 {
     public class CharacterDamageCollider : MonoBehaviour
     {
-        public void OnColliderHit()
+        private float damageValue;
+        public float damageModifier;
+        public CharacterManager characterCausingDamage;
+
+        public void OnColliderHit(CharacterManager characterDamaged)
         {
+            if(characterDamaged.isDead)
+            {
+                return;
+            }
 
-        }
-
-        public void OnColliderExit()
-        {
-
+            if(characterDamaged.characterType == characterCausingDamage.characterType)
+            {
+                return;
+            }
+            
+            //Particle Effect
+            damageValue = characterCausingDamage.characterCombat.damageModifier * damageModifier;
+            characterDamaged.characterStatistics.TakeDamage(damageValue);
         }
     }
 }

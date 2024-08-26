@@ -17,6 +17,11 @@ namespace Onion_AI
             base.Start();
         }
 
+        public override void CharacterMovement_Update(float delta)
+        {
+            
+        }
+
         public override void CharacterMovement_FixedUpdate(float delta)
         {
             HandleMovement(delta);
@@ -24,11 +29,6 @@ namespace Onion_AI
         }
 
         //Functionalities
-
-        private void ClampMovement()
-        {
-            
-        }
 
         protected override void HandleMovement(float delta)
         {
@@ -38,6 +38,7 @@ namespace Onion_AI
 
             moveDirection *= acceleration * movementSpeed * delta;
             playerManager.rigidBody.velocity = moveDirection;
+            playerManager.transform.localPosition = ClampedMovement(playerManager.transform.localPosition);
         }
 
         protected override void HandleRotation(float delta)
