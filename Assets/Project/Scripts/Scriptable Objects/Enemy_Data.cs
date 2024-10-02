@@ -1,6 +1,6 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
+using System.Collections;
 
 namespace Onion_AI
 {
@@ -13,28 +13,33 @@ namespace Onion_AI
         [SerializeField] private EnemyManager[] enemyManagers;
         public ObjectPool<EnemyManager> enemyPool {get; private set;}
 
-        public override void Initialize(int quantity, int maxQuantity, Transform spawnPoint)
+        public override void Initialize(int quantity, int maxQuantity)
         {
-            objectSpawner = this;
-            EnemyManager randomObject = RandomObject();
+            base.Initialize(quantity, maxQuantity);
 
-            base.Initialize(quantity, maxQuantity, spawnPoint);
-            enemyPool = ObjectSpawner.PoolEnemyManager(quantity, maxQuantity, spawnPoint, randomObject);
+            EnemyManager randomObject = RandomObject();
+            enemyPool = ObjectSpawner.PoolEnemyManager(quantity, maxQuantity, randomObject);
         }
 
-        public void IObjectSpawner_SpawnObject(float minWidth, float maxWidth)
+        public void IObjectSpawner_SpawnObject(float minWidth, float maxWidth, SpawnPoint spawnPoint)
         {
+            if(enemyPool == null)
+            {
+                return;
+            }
             EnemyManager enemyManager = enemyPool.Get();
 
-            enemyManager.enemyData = this;
-            enemyManager.Initialize(enemySpawner.gameManager);
             float randomPositionX = Random.Range(minWidth, maxWidth);
-
             Vector2 spawnPosition = new Vector2(randomPositionX, 0.0f);
-            enemyManager.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
+
             hasResetPosition = true;
+            enemyManager.transform.SetParent(spawnPoint.transform);
+            enemyManager.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
+            enemyManager.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
             
-            enemySpawner.StartCoroutine(SetEnemyManagerProperties(enemyManager));
+            spawnPoint.spawnedEnemies.Add(enemyManager);
+            enemyManager.Initialize(this, enemyManagersController, spawnPoint);
+            enemyManagersController.StartCoroutine(SetEnemyManagerProperties(enemyManager));
         }
 
         private IEnumerator SetEnemyManagerProperties(EnemyManager enemyManager)
@@ -45,7 +50,9 @@ namespace Onion_AI
             yield return new WaitUntil(() => enemyManager.hasSetPath == false);
             hasResetPosition = false;
             enemyManager.gameObject.SetActive(true);
-            enemySpawner.StopCoroutine(SetEnemyManagerProperties(enemyManager));
+            
+            enemyManagersController.numberOfSpawns++;
+            enemyManagersController.StopCoroutine(SetEnemyManagerProperties(enemyManager));
         }
 
         private EnemyManager RandomObject()

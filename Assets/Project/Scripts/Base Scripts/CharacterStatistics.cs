@@ -36,6 +36,11 @@ namespace Onion_AI
             characterManager.healthBarUI?.SetCurrentValue(currentHealth);
         }
 
+        public virtual void HandleDeath()
+        {
+            
+        }
+
         public virtual void TakeDamage(float damageValue)
         {
             currentHealth -= damageValue;

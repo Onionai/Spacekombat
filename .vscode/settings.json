@@ -58,8 +58,12 @@
     },
     "dotnet.defaultSolution": "Spacekombat.sln",
     "cSpell.words": [
+        "Lerp",
         "Mathf",
+        "Perlin",
         "Rigidbody",
-        "Spawnable"
+        "Scriptable",
+        "Spawnable",
+        "Tarodev"
     ]
 }

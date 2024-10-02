@@ -9,7 +9,7 @@ namespace Onion_AI
 
         //Components
         public Rigidbody2D rigidBody {get; private set;}
-         public LevelSpawners levelSpawner;
+        public LevelSpawners levelSpawner;
         private CharacterDamageCollider characterDamageCollider;
 
         [Header("Stats")]
@@ -30,7 +30,7 @@ namespace Onion_AI
             characterDamageCollider.characterCausingDamage = characterManager;
             transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
 
-            rigidBody.AddForce(spawnPoint.up * projectileSpeed, ForceMode2D.Impulse);
+            rigidBody.AddForce(spawnPoint.up * projectileSpeed * EnvironmentManager.gameSpeedMultiplier, ForceMode2D.Impulse);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -39,7 +39,7 @@ namespace Onion_AI
 
             if(damagedCharacter != null)
             {
-                characterDamageCollider.OnColliderHit(damagedCharacter);
+                characterDamageCollider.OnBulletColliderHit(this, damagedCharacter);
             }
         }
 

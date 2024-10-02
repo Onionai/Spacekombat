@@ -5,7 +5,7 @@ namespace Onion_AI
     public class PathController : MonoBehaviour
     {
         [field: Header("Controller Information")]
-        [field: SerializeField] public PathControllerType pathControllerType = PathControllerType.FourWayPath;
+        [field: SerializeField] public EnemyType enemyTypePath = EnemyType.Static;
 
         [field: Header("Paths")]
         [field: Header("Path 01")]
@@ -17,8 +17,11 @@ namespace Onion_AI
         [field: Header("Path 03")]
         public Transform[] wayPoints03Nodes;
 
-        [field: Header("Exit Path")]
-        public Transform[] exitWayPointsNodes;
+        [field: Header("Path 04")]
+        public Transform[] wayPoints04Nodes;
+
+        [field: Header("Pathways")]
+        public Transform[] allWayPointsNodes;
 
     }
 }

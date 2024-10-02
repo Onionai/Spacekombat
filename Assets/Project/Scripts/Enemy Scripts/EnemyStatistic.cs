@@ -47,13 +47,21 @@ namespace Onion_AI
                 currentHealth = 0.0f;
                 showHealthBar = false;
                 characterManager.isDead = true;
-                enemyManager.gameManager.KilledTarget();
+
+                InstantiateCoin();
+                enemyManager.enemyManagersController.KilledTarget();
                 enemyManager.enemyData.enemyPool.Release(enemyManager);
                 return;
             }
             showHealthBar = true;
             enemyManager.healthBarUI.gameObject.SetActive(showHealthBar);
             base.TakeDamage(damageValue);
+        }
+
+        private void InstantiateCoin()
+        {
+            GoldCoin goldCoin = enemyManager.gameManager.levelSpawners.goldObjectPool.Get();
+            goldCoin.levelSpawner = enemyManager.gameManager.levelSpawners;
         }
 
         private IEnumerator DisplayHealthBarCoroutine()

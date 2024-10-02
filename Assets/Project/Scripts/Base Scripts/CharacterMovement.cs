@@ -8,13 +8,9 @@ namespace Onion_AI
 
         //Component
         protected CharacterManager characterManager;
-
-        //ClampMovement
-        protected Vector2 maxCameraBounds;
-        protected Vector2 minCameraBounds;
         
         //Movements
-        protected Vector3 moveDirection;
+        public Vector2 moveDirection;
         protected Vector3 rotateDirection;
 
         #endregion
@@ -39,18 +35,10 @@ namespace Onion_AI
             characterManager = GetComponent<CharacterManager>();
         }
 
-        protected virtual void OnEnable()
-        {
-            
-        }
-
         protected virtual void Start()
         {
             mainCamera = Camera.main;
             cameraObject = mainCamera.transform;
-
-            minCameraBounds = mainCamera.ViewportToWorldPoint(new Vector2(0,0));
-            maxCameraBounds = mainCamera.ViewportToWorldPoint(new Vector2(1,1));
         }
 
         public virtual void CharacterMovement_Update(float delta)
@@ -67,19 +55,14 @@ namespace Onion_AI
 
         protected Vector3 ClampedMovement(Vector3 position)
         {
-            float xPos = Mathf.Clamp(position.x, minCameraBounds.x + leftPadding, maxCameraBounds.x - rightPadding);
-            float yPos = Mathf.Clamp(position.y, minCameraBounds.y + bottomPadding, maxCameraBounds.y - topPadding);
+            float xPos = Mathf.Clamp(position.x, characterManager.gameManager.minCameraBounds.x + leftPadding, characterManager.gameManager.maxCameraBounds.x - rightPadding);
+            float yPos = Mathf.Clamp(position.y, characterManager.gameManager.minCameraBounds.y + bottomPadding, characterManager.gameManager.maxCameraBounds.y - topPadding);
 
             Vector3 clampedPosition = new Vector3(xPos, yPos, position.z);
             return clampedPosition;
         }
 
         protected virtual void HandleMovement(float delta)
-        {
-
-        }
-
-        protected virtual void HandleRotation(float delta)
         {
 
         }

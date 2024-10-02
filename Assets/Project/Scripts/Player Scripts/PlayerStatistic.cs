@@ -33,11 +33,19 @@ namespace Onion_AI
         {
             if(currentHealth <= 0.0f)
             {
-                characterManager.isDead = true;
-                //Show Exit Dialog
+                HandleDeath();
                 return;
             }
             base.TakeDamage(damageValue);
+        }
+
+        public override void HandleDeath()
+        {
+            base.HandleDeath();
+            currentHealth = 0.0f;
+            characterManager.isDead = true;
+            characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.deathHash, true);
+            //Show Exit Dialog
         }
 
         protected override void RegenerateStatisticProcedurally()

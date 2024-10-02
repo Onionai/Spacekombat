@@ -8,7 +8,7 @@ namespace Onion_AI
         public float damageModifier;
         public CharacterManager characterCausingDamage;
 
-        public void OnColliderHit(CharacterManager characterDamaged)
+        public void OnBulletColliderHit(WeaponManager weaponManager, CharacterManager characterDamaged)
         {
             if(characterDamaged.isDead)
             {
@@ -23,6 +23,7 @@ namespace Onion_AI
             //Particle Effect
             damageValue = characterCausingDamage.characterCombat.damageModifier * damageModifier;
             characterDamaged.characterStatistics.TakeDamage(damageValue);
+            weaponManager.ReleaseFromPool();
         }
     }
 }

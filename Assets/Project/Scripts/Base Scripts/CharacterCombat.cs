@@ -31,6 +31,7 @@ namespace Onion_AI
             foreach(Transform firePoint in firePoints)
             {
                 Fire(firePoint);
+                //characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.shootingHash, false);
             }
         }
 

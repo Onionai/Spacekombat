@@ -14,6 +14,11 @@ namespace Onion_AI
 
         public override void CharacterCombat_Update(float delta)
         {
+            if(enemyManager.canShoot != true)
+            {
+                return;
+            }
+            
             deltaTime += delta;
             float delayShotTime = 1 / fireRate;
             if(deltaTime < delayShotTime)
