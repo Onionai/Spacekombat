@@ -58,12 +58,21 @@
     },
     "dotnet.defaultSolution": "Spacekombat.sln",
     "cSpell.words": [
+        "Addressables",
+        "Dont",
+        "interactable",
+        "Kombat",
+        "Leaderboard",
+        "Leaderboards",
         "Lerp",
         "Mathf",
         "Perlin",
+        "Prefs",
         "Rigidbody",
         "Scriptable",
         "Spawnable",
-        "Tarodev"
+        "Tarodev",
+        "UGUI",
+        "worldtimeapi"
     ]
 }
