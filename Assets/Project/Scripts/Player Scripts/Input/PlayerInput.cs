@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Onion_AI
 {
@@ -39,6 +40,16 @@ namespace Onion_AI
         public void PlayerInput_Update()
         {
             HandleMovement();
+        }
+
+        public bool IsCurrentDeviceMouse()
+        {
+            //Check if there is an active mouse, and if it is in use
+            if(Mouse.current != null && Mouse.current.enabled && Mouse.current.delta.ReadValue() != Vector2.zero)
+            {
+                return true;
+            }
+            return false;
         }
 
         //Functionalities

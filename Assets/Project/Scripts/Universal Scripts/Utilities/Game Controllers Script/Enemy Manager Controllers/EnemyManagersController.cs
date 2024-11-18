@@ -1,79 +1,42 @@
 using UnityEngine;
-using System.Linq;
-using Tarodev_Formations;
 using System.Collections.Generic;
 
 namespace Onion_AI
 {
     public class EnemyManagersController : MonoBehaviour
     {
-        public int numberOfSpawns;
         protected float nextSpawnTime;
+
+        //Components
+        [HideInInspector] public CharacterManager target;
+        public GameManager gameManager {get; private set;}
+        public List<EnemyManager> spawnedEnemies {get; protected set;} = new();
+
+        [HideInInspector]
+        public EnemyManagerController_Data enemyManagerController_Data;
+
+        [field: Header("Components")]
+        [SerializeField] protected List<SpawnPoint> spawnPoints = new();
+        [field: SerializeField] public PathController pathController {get; private set;}
+        
+    
+        [Header("Spawn Parameters")]
+        public float spawnRate;
+        public int numberOfSpawns;
+        public bool hasSetSpawnQuantity;
         [SerializeField] protected int spawnQuantity;
-
-        //Formation Setter
-        private List<Vector3> formationPoints = new();
-        private FormationController formationController;
-
-        [Header("Components")]
-        public GameManager gameManager;
-        public EnemySpawner enemySpawner;
+        [SerializeField] protected int spawnRoundCount;
 
         [field: Header("Parameters")]
-        public float spawnRate;
         protected int killedEnemies;
-        public CharacterManager target;
-        protected List<EnemyManager> spawnedEnemies = new();
+        [SerializeField] protected float defaultDelayTimer;
         [SerializeField] protected Transform spawnPointHolder;
-        [SerializeField] protected List<SpawnPoint> spawnPoints = new();
         
         [field: Header("Status")]
-        public bool hasBeenSet;
         public EnemyType enemyType = EnemyType.Static;
         public MissionStatus missionStatus = MissionStatus.Active;
 
         protected virtual void Awake()
-        {
-            GetSpawnPoints();
-            spawnQuantity = SpawnQuantity();
-            formationController = GetComponent<FormationController>();
-
-            formationController.RandomizeParameters();
-
-            int random = (formationController.formationType == FormationType.Box) ? spawnQuantity : Random.Range(0,4);
-            formationController.Initialize(random, spawnQuantity);
-        }
-
-        private int SpawnQuantity()
-        {
-            int random = Random.Range(0,7);
-
-            if(random >= 0 && random < 2)
-            {
-                return 6;
-            }
-            else if(random >= 2 && random < 4)
-            {
-                return 12;
-            }
-            return 18;
-        }
-
-        private void Start()
-        {
-            for(int i = 0; i < spawnPoints.Count; i++)
-            {
-                SpawnPoint spawnPoint = spawnPoints[i];
-                spawnPoint.Initialize(spawnQuantity);
-            }
-        }
-
-        public virtual void InitializeMovement(EnemyManager enemyManager)
-        {
-
-        }
-
-        protected void GetSpawnPoints()
         {
             foreach(Transform child in spawnPointHolder)
             {
@@ -85,63 +48,62 @@ namespace Onion_AI
             }
         }
 
+        protected virtual void Start()
+        {
+            if(enemyType != EnemyType.Linear)
+            {
+                spawnedEnemies.Clear();
+                SetSpawnQuantityAndFormationParameters();
+                PrepareSpawnPoints();
+            }
+        }
+
+
+        public virtual void InitializeController(GameManager GM)
+        {
+            gameManager = GM;
+            target = gameManager.playerManager;
+
+            //Game Rules
+            killedEnemies = 0;
+            numberOfSpawns = 0;
+            missionStatus = MissionStatus.Active;
+            hasSetSpawnQuantity = false;
+        }
+
+        protected virtual int SpawnQuantity()
+        {
+            int random = Random.Range(0,8);
+
+            if(random >= 0 && random < 3)
+            {
+                return 36;
+            }
+            if(random >= 3 && random < 6)
+            {
+                return 48;
+            }
+            return 60;
+        }
+
         public virtual void EnemyManagerController_Updater()
         {
-            if(missionStatus != MissionStatus.Active)
-            {
-                enemySpawner.enemyManagerControllerPool.Release(this);
-                return;
-            }
 
-            SpawnEnemies();
-            ChangeStatus();
+        }       
 
-            HandleFormation(Time.deltaTime);
-            WaitTillEnemiesSet();
+        protected virtual void SetSpawnQuantityAndFormationParameters()
+        {
+            hasSetSpawnQuantity = true;
+            spawnQuantity = SpawnQuantity();
         }
 
-        private void WaitTillEnemiesSet()
+        protected virtual void PrepareSpawnPoints()
         {
-            if(enemyType == EnemyType.Static || enemyType == EnemyType.FreeRoam)
-            {
-                return;
-            }
-
-            if(numberOfSpawns >= spawnQuantity)
-            {
-                return;
-            }
-
-            foreach(SpawnPoint spawnPoint in spawnPoints)
-            {
-                if(hasBeenSet)
-                {
-                    spawnPoint.RandomShooting();
-                }
-            }
+            
         }
-
-        protected virtual void ChangeStatus()
-        {
-            if(target.isDead)
-            {
-                missionStatus = MissionStatus.Completed;
-            }
-            else if(killedEnemies >= spawnQuantity)
-            {
-                missionStatus = MissionStatus.Failed;
-                enemySpawner.currentEnemyManagersController = null;
-            }
-        }        
 
         protected virtual void SpawnEnemies()
         {
-            if(numberOfSpawns >= spawnQuantity)
-            {
-                FillSpawnedEnemies();
-                return;
-            }
-
             if(Time.time <= nextSpawnTime)
             {
                 return;
@@ -156,63 +118,17 @@ namespace Onion_AI
             
         }
 
+        public virtual void ReleaseObject()
+        {
+            enemyManagerController_Data.enemyManagerControllerPool.Release(this);
+        }
+
         //Functionalities
         #region Public Functions
 
         public void KilledTarget()
         {
             killedEnemies += 1;
-        }
-
-        public virtual void InitializeController(EnemySpawner ES, GameManager GM)
-        {
-            gameManager = GM;
-            enemySpawner = ES;
-            killedEnemies = 0;
-            numberOfSpawns = 0;
-            hasBeenSet = false;
-            target = gameManager.playerManager;
-
-            for(int i = 0; i < spawnPoints.Count; i++)
-            {
-                SpawnPoint spawnPoint = spawnPoints[i];
-                spawnPoint.GetPathWayList();
-            }
-            missionStatus = MissionStatus.Active;
-        }
-
-        #endregion
-
-        #region Movement and Formations
-
-        private void FillSpawnedEnemies()
-        {
-            if(enemyType == EnemyType.Static || hasBeenSet)
-            {
-                return;
-            }
-
-            spawnedEnemies.Clear();
-            foreach(SpawnPoint spawnPoint in spawnPoints)
-            {
-                spawnedEnemies.AddRange(spawnPoint.spawnedEnemies);
-            }
-
-            hasBeenSet = true;
-        }
-
-        private void HandleFormation(float delta)
-        {
-            formationPoints = formationController.EvaluatePoints().ToList();
-
-            for(int i = 0; i < spawnedEnemies.Count; i++)
-            {
-                Transform spawnedTransform = spawnedEnemies[i].transform;
-                EnemyMovement spawnedEnemy = spawnedEnemies[i].enemyMovement;
-
-                float speed = spawnedEnemy.acceleration * spawnedEnemy.movementSpeed * delta;
-                spawnedTransform.position = Vector3.MoveTowards(spawnedTransform.position, transform.position + formationPoints[i], speed);
-            }
         }
 
         #endregion

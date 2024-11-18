@@ -4,7 +4,7 @@ namespace Onion_AI
 {
     public interface IObjectSpawner
     {
-        public void IObjectSpawner_SpawnObject(float minWidth, float maxWidth, SpawnPoint spawnPoint);
+        public void IObjectSpawner_SpawnObject(SpawnPoint spawnPoint);
     }
 
     public interface IReleaseFromPool

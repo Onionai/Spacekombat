@@ -7,16 +7,42 @@ namespace Onion_AI
     {
         [Header("Objects To Pool")]
         [SerializeField] private GoldCoin goldCoinObject;
-        [SerializeField] private WeaponManager bulletObject;
+        [SerializeField] private WeaponData[] weaponDataArray;
+
+        [Header("Particles Array")]
+        public ParticleSystem[] impactFXArray;
+        public ParticleSystem[] explosionFXArray;
 
         //Object Pools
         public ObjectPool<GoldCoin> goldObjectPool {get; private set;}
-        public ObjectPool<WeaponManager> bulletPool {get; private set;}
 
         public void Initialize()
         {
-            bulletPool = ObjectSpawner.PoolWeapon(bulletObject);
+            for(int i = 0; i < weaponDataArray.Length; i++)
+            {
+                WeaponData weaponData = Instantiate(weaponDataArray[i]);
+
+                weaponDataArray[i] = weaponData;
+                weaponData.InitializeWeaponData();
+            }
             goldObjectPool = ObjectSpawner.PoolGoldCoin(goldCoinObject);
+        }
+
+        public WeaponManager RandomBulletShooter()
+        {
+            int random = Random.Range(0, weaponDataArray.Length);
+
+            WeaponManager bullet = weaponDataArray[random].bulletPool.Get();
+            bullet.SetWeaponData(weaponDataArray[random]);
+            return bullet;
+        }
+
+        public static void RandomParticleEffect(Vector3 position, Quaternion rotation, ParticleSystem[] particleSystems)
+        {
+            int random = Random.Range(0, particleSystems.Length);
+
+            ParticleSystem particleSystem = Instantiate(particleSystems[random]);
+            particleSystem.transform.SetPositionAndRotation(position, rotation);
         }
     }
 }

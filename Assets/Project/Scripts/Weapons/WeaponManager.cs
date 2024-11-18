@@ -5,6 +5,7 @@ namespace Onion_AI
     public class WeaponManager : MonoBehaviour, IReleaseFromPool
     {
         //Manager
+        private WeaponData weaponData;
         [HideInInspector] public CharacterManager characterManager;
 
         //Components
@@ -24,28 +25,43 @@ namespace Onion_AI
             }
         }
 
+        public void SetWeaponData(WeaponData wd)
+        {
+            weaponData = wd;
+        }
+
         public void Initialize(Transform spawnPoint, CharacterCombat characterCombat)
         {
             characterManager = characterCombat.characterManager;
             characterDamageCollider.characterCausingDamage = characterManager;
-            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
 
+            transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
             rigidBody.AddForce(spawnPoint.up * projectileSpeed * EnvironmentManager.gameSpeedMultiplier, ForceMode2D.Impulse);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            CharacterManager damagedCharacter = other.GetComponentInParent<CharacterManager>();
+            if(other.CompareTag("Bullet"))
+            {
+                ReleaseFromPool();
+                return;
+            }
 
+            CharacterManager damagedCharacter = other.GetComponentInParent<CharacterManager>();
             if(damagedCharacter != null)
             {
-                characterDamageCollider.OnBulletColliderHit(this, damagedCharacter);
+                characterDamageCollider.OnBulletColliderHit(other, levelSpawner, damagedCharacter);
+
+                if(damagedCharacter.characterType != characterManager.characterType)
+                {
+                    ReleaseFromPool();
+                }
             }
         }
 
         public void ReleaseFromPool()
         {
-            levelSpawner.bulletPool.Release(this);
+            weaponData.ReleaseObject(this);
         }
     }
 }

@@ -1,21 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Onion_AI
 {
-    public class Jet_Data : MonoBehaviour
+    [CreateAssetMenu(fileName = "Jet_Data", menuName = "OnionAI/JetData")]
+    public class Jet_Data : ScriptableObject
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        public string jetName;
+        public Texture jetImage;
+        public GameObject jetObject;
+        public JetStatistics jetStatistics;
+        //Bio
     }
 }

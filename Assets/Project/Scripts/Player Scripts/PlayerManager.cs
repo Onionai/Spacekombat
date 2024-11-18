@@ -11,12 +11,13 @@ namespace Onion_AI
         public PlayerStatistic playerStatistic {get; private set;}
 
         //status
-        bool hasReloaded;
         public int coinCount;
 
         protected override void Awake()
         {
             base.Awake();
+
+            canShoot = false;
             playerInput = GetComponent<PlayerInput>();
             gameManager = FindObjectOfType<GameManager>();
 
@@ -28,36 +29,45 @@ namespace Onion_AI
         protected override void Start()
         {
             base.Start();
+
+            healthBarUI = gameManager.uIManager.PlayerHealthBar;
             characterAnimationManager.PlayTargetAnimation(characterAnimationManager.spawnHash, true);
         }
 
         public void PlayReloadAnimation()
         {
-            if(hasReloaded != true)
-            {
-                characterAnimationManager.PlayTargetAnimation(characterAnimationManager.reloadHash, true);
-                hasReloaded = true;
-            }
+            characterAnimationManager.PlayTargetAnimation(characterAnimationManager.reloadHash, true);
         }
 
         protected override void Update()
         {
+            if(GameManager.gameState != GameState.Active)
+            {
+                return;
+            }
+            
             playerMovement.ClampPlayerPosition();
 
             if(isDead)
             {
                 return;
             }
-            
+
             playerInput.PlayerInput_Update();
+            performingAction = animator.GetBool(characterAnimationManager.performActionHash);
+
             base.Update();
             gameManager.uIManager.DisplayCoinCount(coinCount);
-            performingAction = animator.GetBool(characterAnimationManager.performActionHash);
         }
 
         public void OnTriggerEnter2D(Collider2D other)
         {
             if(isDead)
+            {
+                return;
+            }
+
+            if(other.CompareTag("Bullet"))
             {
                 return;
             }

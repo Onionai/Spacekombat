@@ -1,21 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
+using System.Collections.Generic;
 
 namespace Onion_AI
 {
-    public class Data : MonoBehaviour
+    [CreateAssetMenu(fileName = "Weapon_Data", menuName = "OnionAI/WeaponData")]
+    public class WeaponData : ScriptableObject
     {
-        // Start is called before the first frame update
-        void Start()
+        [SerializeField] private WeaponManager bulletObject;
+        public ObjectPool<WeaponManager> bulletPool {get; private set;}
+
+        public void InitializeWeaponData()
         {
-        
+            bulletPool = ObjectSpawner.PoolWeapon(bulletObject);
         }
 
-        // Update is called once per frame
-        void Update()
+        public void ReleaseObject(WeaponManager objectToRelease)
         {
-        
+            bulletPool.Release(objectToRelease);
         }
     }
 }

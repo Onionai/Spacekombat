@@ -48,11 +48,22 @@ namespace Onion_AI
             playerManager.transform.localPosition = ClampedMovement(playerManager.transform.localPosition);
         }
 
+        private Vector2 TargetPosition(float delta)
+        {
+            Vector2 movePosition = targetPosition = acceleration * movementSpeed * EnvironmentManager.gameSpeedMultiplier * moveDirection;
+
+            if(playerManager.playerInput.IsCurrentDeviceMouse())
+            {
+                return 2f * movePosition;
+            }
+            return delta * movePosition;
+        }
+
         protected override void HandleMovement(float delta)
         {
             if(moveDirection != Vector2.zero)
             {
-                targetPosition = acceleration * movementSpeed * EnvironmentManager.gameSpeedMultiplier * delta * moveDirection + playerManager.rigidBody.position;
+                targetPosition = TargetPosition(delta) + playerManager.rigidBody.position;
 
                 Vector2 smoothPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
                 playerManager.rigidBody.MovePosition(smoothPosition);

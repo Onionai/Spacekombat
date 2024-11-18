@@ -1,10 +1,13 @@
 using UnityEngine;
+using System.Collections;
 
 namespace Onion_AI
 {
     public class PlayerStatistic : CharacterStatistics
     {
         PlayerManager playerManager;
+        [SerializeField] private float delaySeconds;
+        private WaitForSeconds delayBeforeDisplayingExitPanel;
 
         protected override void Awake()
         {
@@ -15,6 +18,7 @@ namespace Onion_AI
         protected override void Start()
         {
             base.Start();
+            delayBeforeDisplayingExitPanel = new WaitForSeconds(delaySeconds);
         }
 
         public override void CharacterStatistics_Update()
@@ -44,8 +48,17 @@ namespace Onion_AI
             base.HandleDeath();
             currentHealth = 0.0f;
             characterManager.isDead = true;
+            
+            HealthCounterManager.Instance.ReduceHealthCounter();
             characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.deathHash, true);
-            //Show Exit Dialog
+
+            StartCoroutine(DisplayExitMenu());
+        }
+
+        private IEnumerator DisplayExitMenu()
+        {
+            yield return delayBeforeDisplayingExitPanel;
+            characterManager.gameManager.uIManager.DisplayExitMenu(true);
         }
 
         protected override void RegenerateStatisticProcedurally()

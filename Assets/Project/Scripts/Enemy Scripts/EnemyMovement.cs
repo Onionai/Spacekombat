@@ -1,22 +1,20 @@
+using PathCreation;
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace Onion_AI
 {
     public class EnemyMovement : CharacterMovement
     {
-        private float interpolateAmount;
-
-        [Header("Parameters")]
-        public int cyclesLeft;
-        public float distanceToTarget;
-        public float maxDistanceToTarget;
+        private float speed;
+        private PathCreator pathCreator;
         private EnemyManager enemyManager;
 
-        [Header("Path Information")]
-        public int currentPathIndex;
-        public Transform currentWayPoint;
-        private Vector3 wayPointPosition;
+        //EnemyManagers Controller
+        EnemyManagersController enemyManagersController;
+        EnemyManagersController_Fixed enemyManagersController_Fixed;
+
+        private float pathLength;
+        private float distanceRemaining;
 
         protected override void Awake()
         {
@@ -26,17 +24,14 @@ namespace Onion_AI
 
         public void Initialize()
         {
-            if(enemyManager.hasSetPath == true)
-            {
-                return;
-            }
+            SpawnPoint spawnPoint = enemyManager.spawnPoint;
+            pathCreator = spawnPoint.pathCreator;
+            enemyManagersController = enemyManager.enemyManagersController;
 
-            if(enemyManager.enemyType == EnemyType.FreeRoam)
+            if(enemyManager.enemyType == EnemyType.Linear)
             {
-                enemyManager.enemyManagersController.InitializeMovement(enemyManager);
-                wayPointPosition = currentWayPoint.position;
+                enemyManagersController_Fixed = enemyManagersController as EnemyManagersController_Fixed;
             }
-            enemyManager.SetEnemyFirstPath(true);
         }
 
         protected override void Start()
@@ -46,6 +41,11 @@ namespace Onion_AI
 
         public override void CharacterMovement_FixedUpdate(float delta)
         {
+            if(enemyManager.attemptSuicide)
+            {
+                return;
+            }
+            
             HandleMovement(delta);
             base.CharacterMovement_FixedUpdate(delta);
         }
@@ -54,56 +54,61 @@ namespace Onion_AI
         
         protected override void HandleMovement(float delta)
         {
-            if(enemyManager.enemyType != EnemyType.Static && enemyManager.enemyType != EnemyType.FreeRoam)
+            float waveSpeedMultiplier = (EnemySpawner.waveCount - 1) / 10f;
+            speed = acceleration * movementSpeed * delta * waveSpeedMultiplier;
+
+            if(enemyManager.enemyType == EnemyType.Linear)
             {
-                HandleLinearMovement(delta);
+                HandleLinearMovement();
             }
             else if(enemyManager.enemyType == EnemyType.Static)
             {
-                HandleStaticMovement(delta);
+                HandleStaticMovement();
             }
             else if(enemyManager.enemyType == EnemyType.FreeRoam)
             {
-                HandleFreeRoamEnemyMovement(delta);
+                HandleFreeRoamEnemyMovement();
             }
         }
 
-        private void HandleLinearMovement(float delta)
+        private void HandleLinearMovement()
         {
-            SpawnPoint spawnPoint = enemyManager.spawnPoint;
+            distanceRemaining += speed;
+            pathLength = pathCreator.path.length;
 
-            if(enemyManager.enemyManagersController.hasBeenSet)
+            if(distanceRemaining >= pathLength)
             {
+                int index = enemyManagersController.spawnedEnemies.IndexOf(enemyManager);
+
+                Vector3 spawnHolderPosition = enemyManagersController_Fixed.SpawnHolderPosition();
+                Vector3 targetPosition = spawnHolderPosition + enemyManagersController_Fixed.formationPoints[index];
+
+                float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+                enemyManager.hasReachedFormation = distanceToTarget <= 0.25f;
+
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed);
                 return;
             }
-            interpolateAmount = (interpolateAmount + delta) % 1f;
-            enemyManager.transform.position = MathsPhysicsTool.CubicLerp(transform.position, spawnPoint.GetNextPoint(1), spawnPoint.GetNextPoint(2), spawnPoint.GetNextPoint(3), interpolateAmount);
+            transform.position = pathCreator.path.GetPointAtDistance(distanceRemaining, EndOfPathInstruction.Stop);
         }
 
-        private void HandleStaticMovement(float delta)
+        private void HandleStaticMovement()
         {
-            float speed = acceleration * movementSpeed * delta;
             enemyManager.transform.position += Vector3.down * speed;
         }
 
-        private void HandleFreeRoamEnemyMovement(float delta)
+        private void HandleFreeRoamEnemyMovement()
         {
             enemyManager.canShoot = true;
-            distanceToTarget = Vector3.Distance(enemyManager.transform.position, wayPointPosition);
+            pathCreator = enemyManager.pathCreator;
+            
+            distanceRemaining += speed;
+            transform.position = pathCreator.path.GetPointAtDistance(distanceRemaining, EndOfPathInstruction.Stop);
+        }
 
-            if(distanceToTarget <= maxDistanceToTarget)
-            {
-                currentPathIndex++;
-                if(currentPathIndex >= enemyManager.spawnPoint.pathWayList.Count)
-                {
-                    enemyManager.enemyData.enemyPool.Release(enemyManager);
-                    return;
-                }
-                currentWayPoint = enemyManager.spawnPoint.GetNextWayPoint(currentPathIndex);
-                wayPointPosition = currentWayPoint.position;
-            }
-            float speed = acceleration * movementSpeed * delta;
-            enemyManager.transform.position = Vector3.MoveTowards(enemyManager.transform.position, wayPointPosition, speed);
+        public void ResetDistanceRemaining()
+        {
+            distanceRemaining = 0.0f;
         }
     }
 }

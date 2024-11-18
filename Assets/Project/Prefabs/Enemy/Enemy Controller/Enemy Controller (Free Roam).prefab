@@ -77,14 +77,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0f09172712ead44f8ea0ca041962ef1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfSpawns: 0
-  spawnQuantity: 0
-  gameManager: {fileID: 0}
-  enemySpawner: {fileID: 0}
-  spawnRate: 2
   target: {fileID: 0}
-  spawnPointHolder: {fileID: 8334586355873381357}
   spawnPoints: []
+  <pathController>k__BackingField: {fileID: 3969382952787716256, guid: 654ea1fc46b8cc84591d67cdbfc23b5f, type: 3}
+  spawnRate: 2
+  numberOfSpawns: 0
+  hasFinishSpawning: 0
+  hasSetSpawnQuantity: 0
+  spawnQuantity: 0
+  spawnRoundCount: 0
+  defaultDelayTimer: 0
+  spawnPointHolder: {fileID: 8334586355873381357}
   enemyType: 2
   missionStatus: 0
   maximumWidth: 3.5
@@ -115,7 +118,7 @@ Transform:
   m_GameObject: {fileID: 3502095689224671717}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -133,9 +136,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e51e3a225b96d42adc57e19d0e48fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnableItem: {fileID: 11400000, guid: f1c05b0e02b1c544e82862eace2c9427, type: 2}
+  pathCreator: {fileID: 0}
+  spawnableItem: {fileID: 11400000, guid: d820f7fd386b622489937d63146fdae0, type: 2}
   spawnedEnemies: []
   enemyManagersController: {fileID: 0}
   singlePathwayList: []
-  <wayPointConfig>k__BackingField: {fileID: 11400000, guid: 327f87e8c866cd54594f8deb5b2d50e7, type: 2}
-  <formation>k__BackingField: {fileID: 0}

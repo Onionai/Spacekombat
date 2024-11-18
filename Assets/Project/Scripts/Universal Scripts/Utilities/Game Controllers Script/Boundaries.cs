@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Onion_AI
@@ -11,6 +9,17 @@ namespace Onion_AI
         private void OnTriggerEnter2D(Collider2D other)
         {
             IReleaseFromPool poolReleaser = other.GetComponent<IReleaseFromPool>();
+
+            if(poolReleaser != null)
+            {
+                poolReleaser.ReleaseFromPool();
+            }
+        }
+
+        private void OnTriggerStay2D(Collider2D other)
+        {
+            IReleaseFromPool poolReleaser = other.GetComponentInParent<IReleaseFromPool>();
+
             if(poolReleaser != null)
             {
                 poolReleaser.ReleaseFromPool();

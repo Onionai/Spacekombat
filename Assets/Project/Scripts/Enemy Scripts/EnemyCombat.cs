@@ -18,19 +18,20 @@ namespace Onion_AI
             {
                 return;
             }
-            
-            deltaTime += delta;
-            float delayShotTime = 1 / fireRate;
-            if(deltaTime < delayShotTime)
-            {
-                return;
-            }
             base.CharacterCombat_Update(delta);
         }
 
         protected override void Shoot(float delta)
         {
+            deltaTime += Time.deltaTime;
+            float delayShotTime = 1 / fireRate;
+
+            if (deltaTime < delayShotTime)
+            {
+                return;
+            }
             base.Shoot(delta);
+            deltaTime = 0.0f;
         }
 
         protected override void Fire(Transform firePoint)

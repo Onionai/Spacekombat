@@ -6,10 +6,15 @@ namespace Onion_AI
     {
         public LevelSpawners levelSpawner;
 
-        [field: Header("Player Stats")]
+        [field: Header("Coin Stats")]
+        [SerializeField] private int coinCount;
         [SerializeField] private float acceleration = 10;
         [SerializeField] private float movementSpeed = 100;
-        [SerializeField] private float rotationSpeed = 20.0f;
+
+        public void SetCoinCount(int count)
+        {
+            coinCount = count;
+        }
 
         private void FixedUpdate()
         {
@@ -20,15 +25,19 @@ namespace Onion_AI
         private void HandleMovement(float delta)
         {
             float speed = acceleration * movementSpeed * delta;
-            transform.position += Vector3.down * speed;
+            transform.position = Vector3.MoveTowards(transform.position, GameManager.playerTransform.position, speed);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            PlayerManager playerManager = other.GetComponentInParent<PlayerManager>();
-            if(playerManager != null)
+            if (other.CompareTag("Bullet"))
             {
-                playerManager.coinCount++;
+                return;
+            }
+            PlayerManager playerManager = other.GetComponentInParent<PlayerManager>();
+            if (playerManager != null)
+            {
+                playerManager.coinCount += coinCount;
                 ReleaseFromPool();
             }
         }

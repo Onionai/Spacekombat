@@ -4,10 +4,6 @@ namespace Onion_AI
 {
     public class EnemyManagersController_FreeRoam : EnemyManagersController
     {
-        [field: Header("Personal Parameters")]
-        [SerializeField] private float maximumWidth;
-        [SerializeField] private float minimumWidth;
-
         protected override void SpawnEnemies()
         {
             if(Time.time <= nextSpawnTime)
@@ -19,21 +15,43 @@ namespace Onion_AI
             Spawn();
         }
 
+        public override void EnemyManagerController_Updater()
+        {
+            if(target.isDead)
+            {
+                missionStatus = MissionStatus.Completed;
+                gameObject.SetActive(false);
+                return;
+            }
+            
+            if(hasSetSpawnQuantity && killedEnemies >= spawnQuantity)
+            {
+                missionStatus = MissionStatus.Failed;
+                return;
+            }
+
+            SpawnEnemies();
+        }
+
+        protected override void PrepareSpawnPoints()
+        {
+            for(int i = 0; i < spawnPoints.Count; i++)
+            {
+                SpawnPoint spawnPoint = spawnPoints[i];
+                 
+                spawnPoint.spawnedEnemies.Clear();
+                spawnPoint.Initialize(null);
+            }
+        }
+
+
         protected override void Spawn()
         {
             for(int i = 0; i < spawnPoints.Count; i++)
             {
                 SpawnPoint spawnPoint = spawnPoints[i];
-                spawnPoint.SpawnEnemyManager(minimumWidth, maximumWidth);
+                spawnPoint.SpawnEnemyManager();
             }
-        }
-
-        public override void InitializeMovement(EnemyManager enemyManager)
-        {
-            EnemyMovement enemyMovement = enemyManager.enemyMovement;
-
-            enemyMovement.currentPathIndex = 0;
-            enemyMovement.currentWayPoint = enemyManager.spawnPoint.GetNextWayPoint(enemyMovement.currentPathIndex);
         }
         //Functionalities
     }

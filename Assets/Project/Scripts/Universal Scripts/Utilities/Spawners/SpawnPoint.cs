@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using PathCreation;
 
 namespace Onion_AI
 {
@@ -13,16 +14,12 @@ namespace Onion_AI
         private List<int> spawnedEnemiesIndexes = new List<int>();
 
         [Header("Spawn Parameters")]
+        public PathCreator pathCreator;
         [SerializeField] public Spawnable_Items spawnableItem;
 
         [Header("Enemy Parameters")]
         public List<EnemyManager> spawnedEnemies = new List<EnemyManager>();
         [SerializeField] private EnemyManagersController enemyManagersController;
-
-        [field: Header("WayPoint and Formation Configuration")]
-        public List<Transform> singlePathwayList = new List<Transform>();
-        public List<List<Transform>> pathWayList = new List<List<Transform>>();
-        [field: SerializeField] public WayPointConfig wayPointConfig {get; private set;}
 
         private void Awake()
         {
@@ -36,7 +33,15 @@ namespace Onion_AI
             {
                 return;
             }
-            wayPointConfig = Instantiate(wayPointConfig);
+        }
+
+        public void Initialize(PathCreator pc)
+        {
+            spawnableItem = Instantiate(spawnableItem);
+
+            pathCreator = pc;
+            spawnableItem.enemyManagersController = enemyManagersController;
+            spawnableItem.Initialize();
         }
 
         public void RandomShooting()
@@ -90,65 +95,33 @@ namespace Onion_AI
             spawnedEnemiesIndexes.Clear();
             foreach(EnemyManager member in spawnedEnemies)
             {
+                if(member.hasReachedFormation != true)
+                {
+                    continue;
+                }
+
                 if(member != enemyManager)
                 {
                     spawnedEnemiesIndexes.Add(spawnedEnemies.IndexOf(member));
                 }
             }
 
+            if(spawnedEnemiesIndexes.Count == 0)
+            {
+                return null;
+            }
+            
             int random = Random.Range(0, spawnedEnemiesIndexes.Count);
             EnemyManager returnValue = spawnedEnemies[spawnedEnemiesIndexes[random]];
             return returnValue;
         }
 
-        public void Initialize(int numberOfSpawns)
-        {
-            spawnableItem = Instantiate(spawnableItem);
-            spawnableItem.enemyManagersController = enemyManagersController;
-            spawnableItem.Initialize(numberOfSpawns, numberOfSpawns + 10);
-        }
-
-        public void GetPathWayList()
-        {
-            if(enemyManagersController.enemyType == EnemyType.Static)
-            {
-                return;
-            }
-            pathWayList.Clear();
-            singlePathwayList.Clear();
-
-            wayPointConfig.Initialize();
-            pathWayList.Add(wayPointConfig.pathWay01);
-            pathWayList.Add(wayPointConfig.pathWay02);
-            pathWayList.Add(wayPointConfig.pathWay03);
-            pathWayList.Add(wayPointConfig.pathWay04);
-
-            for(int i = 0; i < wayPointConfig.totalPathWays.Count; i++)
-            {
-                Transform pathway = wayPointConfig.totalPathWays[i];
-                singlePathwayList.Add(pathway);
-            }
-        }
-
-        public Vector3 GetNextPoint(int currentPathIndex)
-        {
-            return singlePathwayList[currentPathIndex].position;
-        }
-
-        public Transform GetNextWayPoint(int currentPathIndex)
-        {
-            List<Transform> wayPoint = new (pathWayList[currentPathIndex]);
-
-            int randomPoint = Random.Range(0, wayPoint.Count);
-            return wayPoint[randomPoint];
-        }
-
-        public void SpawnEnemyManager(float minWidth, float maxWidth)
+        public void SpawnEnemyManager()
         {
             Enemy_Data objectSpawner = spawnableItem as Enemy_Data;
             if(objectSpawner != null)
             {
-                objectSpawner.IObjectSpawner_SpawnObject(minWidth, maxWidth, this);
+                objectSpawner.IObjectSpawner_SpawnObject(this);
             }
         }
     }

@@ -1,39 +1,49 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace Onion_AI
 {
     public class GameManager : MonoBehaviour
     {
-        private int totalScore;
+        public static int totalScore;
 
+        public AudioManager audioManager {get; private set;}
         public Boundaries[] boundaries {get; private set;}
-        public LevelSpawners levelSpawners {get; private set;}
         public EnemySpawner enemySpawner {get; private set;}
+        public LevelSpawners levelSpawners {get; private set;}
         public EnvironmentManager environmentManager {get; private set;}
 
-        [field: Header("Camaera Parameters")]
+        [field: Header("Camera Parameters")]
         public Vector2 maxCameraBounds {get; private set;}
         public Vector2 minCameraBounds {get; private set;}
 
+        [field: Header("Public Components")]
+        public UIManager uIManager;
+        private LoadPlayer loadPlayer;
+        public PlayerManager playerManager;
+        public static Transform playerTransform;
+        [SerializeField] private HealthCounterPanel healthCounterPanel;
+
         [field: Header("Game Rules")]
         public int targetsNeededToKill;
-        public PlayerManager playerManager;
-        public UIManager uIManager;
         public float scoreTimeMultiplier;
-        [field: SerializeField] public int TotalScore {get; private set;}
-        [field: SerializeField] public int CoinsCollected {get; private set;}
 
         [Header("Status")]
         public bool hasBeenSet;
-        public bool canProceed;
+        public static GameState gameState = GameState.Active;
         [field: SerializeField] public bool missionAccomplished {get; private set;}
 
         private void Awake()
         {
             uIManager = FindObjectOfType<UIManager>();
             levelSpawners = GetComponent<LevelSpawners>();
+
+            loadPlayer = FindObjectOfType<LoadPlayer>();
+            audioManager = FindObjectOfType<AudioManager>();
+
+            loadPlayer.LoadSelectedJet();
             playerManager = FindObjectOfType<PlayerManager>();
+            
+            playerTransform = playerManager.transform;
             boundaries = GetComponentsInChildren<Boundaries>();
             
             enemySpawner = FindObjectOfType<EnemySpawner>();
@@ -41,6 +51,7 @@ namespace Onion_AI
 
             uIManager.gameManager = this;
             enemySpawner.gameManager = this;
+            HealthCounterManager.Instance.SetHealthCounterPanel(healthCounterPanel);
         }
         
         // Start is called before the first frame update
@@ -49,6 +60,7 @@ namespace Onion_AI
             InitializeBoundaries();
             levelSpawners.Initialize();
 
+            audioManager.PlaySound(101);
             Camera mainCamera = Camera.main;
             targetsNeededToKill = enemySpawner.spawnQuantity;
             minCameraBounds = mainCamera.ViewportToWorldPoint(new Vector2(0,0));
@@ -58,6 +70,18 @@ namespace Onion_AI
         // Update is called once per frame
         void Update()
         {
+            PlayGamePlaySound();
+            if(gameState == GameState.Paused)
+            {
+                return;
+            }
+
+            if(gameState == GameState.Resume)
+            {
+                uIManager.HandlePauseCountdown();
+                return;
+            }
+            
             UpdateTargetsToKill();
             if(missionAccomplished)
             {
@@ -70,6 +94,16 @@ namespace Onion_AI
             environmentManager.EnvironmentManager_Updater(delta);
         }
 
+        private void PlayGamePlaySound()
+        {
+            if(playerManager.isDead)
+            {
+                audioManager.StopSound(101);
+                audioManager.PlaySound(100);
+                return;
+            }
+        }
+
         //Functionalities
         private void CalculateTotalScore(float delta)
         {
@@ -78,8 +112,8 @@ namespace Onion_AI
                 return;
             }
 
-            totalScore += Mathf.FloorToInt(delta * scoreTimeMultiplier);
-            uIManager.DisplayTotalScore(totalScore);
+            float currentWaveFactor = (EnemySpawner.waveCount - 1)/10f;
+            totalScore += Mathf.FloorToInt(delta * scoreTimeMultiplier * currentWaveFactor);
         }
 
         public void UpdateTargetsToKill()

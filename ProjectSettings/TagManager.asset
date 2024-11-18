@@ -8,13 +8,13 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Boundaries
+  - 
   - Water
   - UI
-  - Player
-  - Enemy
-  - Damage Collider
-  - Coin
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

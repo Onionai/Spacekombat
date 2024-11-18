@@ -13,31 +13,26 @@ namespace Onion_AI
         [SerializeField] private EnemyManager[] enemyManagers;
         public ObjectPool<EnemyManager> enemyPool {get; private set;}
 
-        public override void Initialize(int quantity, int maxQuantity)
+        public override void Initialize()
         {
-            base.Initialize(quantity, maxQuantity);
+            base.Initialize();
 
             EnemyManager randomObject = RandomObject();
-            enemyPool = ObjectSpawner.PoolEnemyManager(quantity, maxQuantity, randomObject);
+            enemyPool = ObjectSpawner.PoolEnemyManager(randomObject);
         }
 
-        public void IObjectSpawner_SpawnObject(float minWidth, float maxWidth, SpawnPoint spawnPoint)
+        public void IObjectSpawner_SpawnObject(SpawnPoint spawnPoint)
         {
             if(enemyPool == null)
             {
                 return;
             }
-            EnemyManager enemyManager = enemyPool.Get();
-
-            float randomPositionX = Random.Range(minWidth, maxWidth);
-            Vector2 spawnPosition = new Vector2(randomPositionX, 0.0f);
 
             hasResetPosition = true;
+            EnemyManager enemyManager = enemyPool.Get();
             enemyManager.transform.SetParent(spawnPoint.transform);
-            enemyManager.transform.localScale = new Vector3(0.55f, 0.55f, 0.55f);
-            enemyManager.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.identity);
+            enemyManager.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             
-            spawnPoint.spawnedEnemies.Add(enemyManager);
             enemyManager.Initialize(this, enemyManagersController, spawnPoint);
             enemyManagersController.StartCoroutine(SetEnemyManagerProperties(enemyManager));
         }
@@ -45,9 +40,6 @@ namespace Onion_AI
         private IEnumerator SetEnemyManagerProperties(EnemyManager enemyManager)
         {
             yield return new WaitUntil(() => hasResetPosition);
-            enemyManager.SetEnemyFirstPath(false);
-
-            yield return new WaitUntil(() => enemyManager.hasSetPath == false);
             hasResetPosition = false;
             enemyManager.gameObject.SetActive(true);
             

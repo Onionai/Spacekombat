@@ -1,3 +1,4 @@
+using PathCreation;
 using UnityEngine;
 
 namespace Onion_AI
@@ -12,11 +13,12 @@ namespace Onion_AI
         [field: Header("Parameters")]
         public Enemy_Data enemyData {get; private set;}
         public SpawnPoint spawnPoint {get; private set;}
+        public PathCreator pathCreator {get; private set;}
         [field: SerializeField] public EnemyManagersController enemyManagersController {get; private set;}
 
         [field: Header("Status")]
-        public bool canShoot;
-        [field: SerializeField] public bool hasSetPath {get; private set;}
+        public bool attemptSuicide;
+        public bool hasReachedFormation;
         [field: SerializeField] public EnemyType enemyType {get; private set;}
 
         public void Initialize(Enemy_Data ED, EnemyManagersController EMC, SpawnPoint SP)
@@ -24,11 +26,15 @@ namespace Onion_AI
             enemyData = ED;
             spawnPoint = SP;
             enemyManagersController = EMC;
+
+            spawnPoint.spawnedEnemies.Add(this);
+            enemyManagersController.spawnedEnemies.Add(this);
             enemyType = enemyManagersController.enemyType;
+
             gameManager = enemyManagersController.gameManager;
+            if(enemyType == EnemyType.FreeRoam) {pathCreator = enemyManagersController.pathController.RandomPathCreator_FreeRoam();}
 
             enemyMovement.Initialize();
-            enemyType = enemyManagersController.enemyType;
             if(isDead) {characterStatistics.ResetHealth();}
         }
 
@@ -44,20 +50,21 @@ namespace Onion_AI
         protected override void Start()
         {
             base.Start();
+            
         }
 
         protected override void Update()
         {
+            if(GameManager.gameState != GameState.Active)
+            {
+                return;
+            }
             base.Update();
-        }
-
-        public void SetEnemyFirstPath(bool setPath)
-        {
-            hasSetPath = setPath;
         }
 
         public void ReleaseFromPool()
         {
+            enemyMovement.ResetDistanceRemaining();
             enemyData.enemyPool.Release(this);
         }
     }

@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections.Generic;
 
 namespace Onion_AI
 {
@@ -26,15 +25,33 @@ namespace Onion_AI
             return null;
         }
 
-        protected override void SpawnEnemies()
+        public override void EnemyManagerController_Updater()
         {
-            if(Time.time <= nextSpawnTime)
+            if(target.isDead)
             {
+                missionStatus = MissionStatus.Completed;
+                gameObject.SetActive(false);
+                return;
+            }
+            
+            if(hasSetSpawnQuantity && killedEnemies >= spawnQuantity)
+            {
+                missionStatus = MissionStatus.Failed;
                 return;
             }
 
-            nextSpawnTime = Time.time + spawnRate;
-            Spawn();
+            SpawnEnemies();
+        } 
+
+        protected override void PrepareSpawnPoints()
+        {
+            for(int i = 0; i < spawnPoints.Count; i++)
+            {
+                SpawnPoint spawnPoint = spawnPoints[i];
+                 
+                spawnPoint.spawnedEnemies.Clear();
+                spawnPoint.Initialize(null);
+            }
         }
 
         protected override void Spawn()
@@ -49,7 +66,7 @@ namespace Onion_AI
                 {
                     continue;
                 }
-                spawnPoint.SpawnEnemyManager(0.0f, 0.0f);
+                spawnPoint.SpawnEnemyManager();
             }
         }
     }

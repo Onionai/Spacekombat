@@ -11,8 +11,6 @@ namespace Onion_AI
         
         //Movements
         public Vector2 moveDirection;
-        protected Vector3 rotateDirection;
-
         #endregion
 
         [field: Header("Parameters")]
@@ -22,7 +20,6 @@ namespace Onion_AI
         [field: Header("Player Stats")]
         [field: SerializeField] public float acceleration {get; private set;} = 10;
         [field: SerializeField] public float movementSpeed {get; private set;} = 100;
-        [field: SerializeField] public float rotationSpeed {get; private set;} = 20.0f;
 
         [field: Header("Clamped Position")]
         [field: SerializeField] public float topPadding {get; private set;} = -12.55f;

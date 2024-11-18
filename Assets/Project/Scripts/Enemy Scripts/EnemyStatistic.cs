@@ -50,7 +50,10 @@ namespace Onion_AI
 
                 InstantiateCoin();
                 enemyManager.enemyManagersController.KilledTarget();
-                enemyManager.enemyData.enemyPool.Release(enemyManager);
+                enemyManager.gameManager.audioManager.PlaySound(111);
+                LevelSpawners.RandomParticleEffect(transform.position, Quaternion.identity, enemyManager.gameManager.levelSpawners.explosionFXArray);
+
+                enemyManager.ReleaseFromPool();
                 return;
             }
             showHealthBar = true;
@@ -61,6 +64,9 @@ namespace Onion_AI
         private void InstantiateCoin()
         {
             GoldCoin goldCoin = enemyManager.gameManager.levelSpawners.goldObjectPool.Get();
+
+            goldCoin.SetCoinCount(30);
+            goldCoin.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
             goldCoin.levelSpawner = enemyManager.gameManager.levelSpawners;
         }
 

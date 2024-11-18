@@ -11,8 +11,8 @@ namespace Onion_AI
 
         [Header("Parameters")]
         [SerializeField] protected float fireRate;
-        [SerializeField] protected List<Transform> firePoints = new();
         [field: SerializeField] public float damageModifier {get; private set;}
+        [field: SerializeField] public List<Transform> firePoints {get; protected set;} = new();
 
         public virtual void Awake()
         {
@@ -23,7 +23,6 @@ namespace Onion_AI
         public virtual void CharacterCombat_Update(float delta)
         {
             Shoot(delta);
-            deltaTime = 0.0f;
         }
 
         protected virtual void Shoot(float delta)
@@ -31,7 +30,11 @@ namespace Onion_AI
             foreach(Transform firePoint in firePoints)
             {
                 Fire(firePoint);
-                //characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.shootingHash, false);
+            }
+            
+            if(characterManager.characterAnimationManager != null) 
+            {
+                characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.shootingHash, false);
             }
         }
 
@@ -46,10 +49,10 @@ namespace Onion_AI
 
         protected virtual void Fire(Transform firePoint)
         {
-            WeaponManager fireObject = characterManager.gameManager.levelSpawners.bulletPool.Get();
-
-            fireObject.levelSpawner = characterManager.gameManager.levelSpawners;
+            WeaponManager fireObject = characterManager.gameManager.levelSpawners.RandomBulletShooter();
+            
             fireObject.Initialize(firePoint, this);
+            fireObject.levelSpawner = characterManager.gameManager.levelSpawners;
         }
     }
 }
