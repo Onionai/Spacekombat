@@ -1,0 +1,69 @@
+# Unity generated folders
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Mm]emoryCaptures/
+/[Uu]nityGenerated/
+/[Uu]nityPackageManager/
+
+# Visual Studio cache directory
+.vscode/
+
+# Rider
+.idea/
+
+# User-specific files
+/*.sln
+/*.suo
+/*.user
+/*.userprefs
+/*.pidb
+/*.booproj
+
+# Unity3D generated meta files
+*.pidb.meta
+
+# Unity3D auto-generated folders
+/[Uu]se[rR]e[gs]tore/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+._*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100/
+.fseventsd/
+.Spotlight-V100/
+.TemporaryItems/
+.Trashes/
+.VolumeIcon.icns
+
+# Auto-generated folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# VS Code directories
+.vscode/
+.history/
+Recordings/Movie_009.mp4
+Recordings/Movie_008.mp4
+Recordings/Movie_007.mp4
+Recordings/Movie_006.mp4
+Recordings/Movie_005.mp4
+Recordings/Movie_004.mp4
+Recordings/Movie_003.mp4
+Recordings/Movie_002.mp4
+Recordings/Movie_001.mp4
+ServerData/WebGL/catalog_1.0.hash
+ServerData/WebGL/catalog_1.0.json
+ServerData/WebGL/defaultlocalgroup_assets_all_1ffc293562b71f7d5853507187b264df.bundle
+ServerData/WebGL/18662b1235b2325862a8768e685dc34b_unitybuiltinshaders_d9e1c53150ab36c41c047fa7d4ebf275.bundle

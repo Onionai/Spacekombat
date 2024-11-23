@@ -1,0 +1,21 @@
+{
+    "m_Dictionary": {
+        "m_DictionaryValues": [
+            {
+                "type": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "buildOutputDirList",
+                "value": "{\"m_Value\":\"C:/Users/tthom/Desktop/Built Projects Demo/Space Kombat Dev Test 05;C:/Users/tthom/Desktop/Built Projects Demo/Space Kombat Dev Test 04;C:/Users/tthom/Desktop/Built Projects Demo/Space Kombat Dev Test 03;C:/Users/tthom/Desktop/Built Projects Demo/Space Kombat Dev Test 02;C:/Users/tthom/Desktop/Built Projects Demo/New folder;C:/Users/tthom/Desktop/Built Projects Demo/SpaceKombat Dev Test 01;C:/Users/tthom/Desktop/Built Projects Demo/SpaceKombat Dev Test 04;C:/Users/tthom/Desktop/Built Projects Demo/SpaceKombat Dev Test 03;C:/Users/tthom/Desktop/Built Projects Demo/SpaceKombat Development Test 02;C:/Users/tthom/Desktop/Built Projects Demo/SpaceKombat Development Test 01\"}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "firstTime",
+                "value": "{\"m_Value\":false}"
+            },
+            {
+                "type": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+                "key": "autoPublish",
+                "value": "{\"m_Value\":true}"
+            }
+        ]
+    }
+}
