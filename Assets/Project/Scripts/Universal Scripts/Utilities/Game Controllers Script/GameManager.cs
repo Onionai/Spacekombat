@@ -26,6 +26,8 @@ namespace Onion_AI
         [field: Header("Game Rules")]
         public int targetsNeededToKill;
         public float scoreTimeMultiplier;
+        public PowerUpClass[] powerUpClassArray;
+        [SerializeField] private Transform spawnPointPU;
 
         [Header("Status")]
         public bool hasBeenSet;
@@ -51,7 +53,7 @@ namespace Onion_AI
 
             uIManager.gameManager = this;
             enemySpawner.gameManager = this;
-            HealthCounterManager.Instance.SetHealthCounterPanel(healthCounterPanel);
+            HealthCounterManager.Instance?.SetHealthCounterPanel(healthCounterPanel);
         }
         
         // Start is called before the first frame update
@@ -92,6 +94,12 @@ namespace Onion_AI
             CalculateTotalScore(delta);
             enemySpawner.EnemySpawn_Updater();
             environmentManager.EnvironmentManager_Updater(delta);
+        }
+
+        public void SpawnPoweerUp()
+        {
+            int random = Random.Range(0, powerUpClassArray.Length);
+            PowerUpClass powerUpClass = Instantiate(powerUpClassArray[random], spawnPointPU);
         }
 
         private void PlayGamePlaySound()

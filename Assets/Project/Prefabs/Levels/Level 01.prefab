@@ -2598,6 +2598,12 @@ MonoBehaviour:
   healthCounterPanel: {fileID: 2225478020358769459}
   targetsNeededToKill: 0
   scoreTimeMultiplier: 375
+  powerUpClassArray:
+  - {fileID: 1079676710224069872, guid: 063ceaa2aaf9d984bb153cabaa96d913, type: 3}
+  - {fileID: 3085458738351281068, guid: c03f1493cd7575842be35e708acdaf35, type: 3}
+  - {fileID: 6269391226661959805, guid: 74ce03d4dc4e7844db3f2a1dd49d7d26, type: 3}
+  - {fileID: 915489105653283938, guid: fec8178b4b6e9334785acc85ea0031d8, type: 3}
+  spawnPointPU: {fileID: 5946728691839136343}
   hasBeenSet: 0
   <missionAccomplished>k__BackingField: 0
 --- !u!114 &5557129854039606202
@@ -3323,6 +3329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11a45c2e3e6f71346aad1db002e46681, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lobbyScene: 0
   healthBarArray:
   - {fileID: 4012429733080439214}
   - {fileID: 6009539731749174455}

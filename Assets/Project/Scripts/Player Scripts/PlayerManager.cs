@@ -12,6 +12,12 @@ namespace Onion_AI
 
         //status
         public int coinCount;
+        public int killCount;
+        public float coinMultiplier;
+
+        [Header("Power Up")]
+        public float expirationTime;
+        public PowerUpClass currentPowerUp;
 
         protected override void Awake()
         {
@@ -39,6 +45,22 @@ namespace Onion_AI
             characterAnimationManager.PlayTargetAnimation(characterAnimationManager.reloadHash, true);
         }
 
+        private void HandlePowerUpCounter(float delta)
+        {
+            if(currentPowerUp == null || currentPowerUp.powerUpType == PowerUpType.Health)
+            {
+                return;
+            }
+
+            if(expirationTime <= 0.0f)
+            {
+                expirationTime = 0.0f;
+                currentPowerUp.EndPowerUp(this);
+                return;
+            }
+            expirationTime -= delta;
+        }
+
         protected override void Update()
         {
             if(GameManager.gameState != GameState.Active)
@@ -57,6 +79,7 @@ namespace Onion_AI
             performingAction = animator.GetBool(characterAnimationManager.performActionHash);
 
             base.Update();
+            HandlePowerUpCounter(Time.deltaTime);
             gameManager.uIManager.DisplayCoinCount(coinCount);
         }
 
@@ -67,7 +90,13 @@ namespace Onion_AI
                 return;
             }
 
-            if(other.CompareTag("Bullet"))
+            if (other.CompareTag("PowerUp"))
+            {
+                PowerUpClass powerUpClass = other.GetComponent<PowerUpClass>();
+                powerUpClass.ApplyPowerUp(this);
+            }
+
+            if (other.CompareTag("Bullet"))
             {
                 return;
             }

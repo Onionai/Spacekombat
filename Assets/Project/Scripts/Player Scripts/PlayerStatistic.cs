@@ -61,6 +61,18 @@ namespace Onion_AI
             characterManager.gameManager.uIManager.DisplayExitMenu(true);
         }
 
+        public void IncreaseCurrentHealth(float health)
+        {
+            float maxHealth = healthLevel * 10.0f;
+
+            if(currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+                return;
+            }
+            currentHealth += health;
+        }
+
         protected override void RegenerateStatisticProcedurally()
         {
             base.RegenerateStatisticProcedurally();

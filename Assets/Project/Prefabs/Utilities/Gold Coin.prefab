@@ -47,10 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelSpawner: {fileID: 0}
-  coinCount: 0
+  coinCount: 1
   acceleration: 2
   movementSpeed: 2
-  rotationSpeed: 20
 --- !u!212 &6295768041695691561
 SpriteRenderer:
   m_ObjectHideFlags: 0

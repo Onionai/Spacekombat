@@ -153,7 +153,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab06916b44353b94b90fe11695e183f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <healthBarUI>k__BackingField: {fileID: 0}
   isDead: 0
+  canShoot: 0
   isMoving: 0
   <characterType>k__BackingField: 1
   coinCount: 0
@@ -201,9 +203,8 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0}
   <mainCamera>k__BackingField: {fileID: 0}
   <cameraObject>k__BackingField: {fileID: 0}
-  <acceleration>k__BackingField: 20
-  <movementSpeed>k__BackingField: 20
-  <rotationSpeed>k__BackingField: 20
+  <acceleration>k__BackingField: 15
+  <movementSpeed>k__BackingField: 25
   <topPadding>k__BackingField: -3
   <leftPadding>k__BackingField: 0.35
   <rightPadding>k__BackingField: 0.35
@@ -408,8 +409,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 4
-  firePoints: []
   <damageModifier>k__BackingField: 2
+  <firePoints>k__BackingField: []
+  fireAudioClip: {fileID: 0}
+  combatAudioSource: {fileID: 0}
+  playerBulletData: {fileID: 0}
 --- !u!1 &7714862830151072297
 GameObject:
   m_ObjectHideFlags: 0

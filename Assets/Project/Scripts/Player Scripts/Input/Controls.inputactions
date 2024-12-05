@@ -6,9 +6,27 @@
             "id": "3385e5d4-bc99-4d41-a2dd-f0d905dcd7e9",
             "actions": [
                 {
-                    "name": "Movement",
+                    "name": "Drag",
+                    "type": "Button",
+                    "id": "f552bc65-85f1-4cb3-bdb1-b6aaf8cc3503",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DeltaMovement",
                     "type": "PassThrough",
                     "id": "3748fec8-6bf5-4a82-acd9-83988cf4c811",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "TouchMovement",
+                    "type": "PassThrough",
+                    "id": "b66cf287-d72f-4c66-ae63-abf362a8f39d",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
@@ -23,7 +41,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -34,7 +52,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -45,7 +63,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -56,7 +74,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -67,20 +85,9 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "7400cfe0-8a92-42f4-9ff0-b62210ccc40d",
-                    "path": "<Touchscreen>/primaryTouch/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Mobile",
-                    "action": "Movement",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 },
                 {
                     "name": "",
@@ -89,7 +96,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -100,7 +107,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -111,7 +118,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -122,7 +129,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -133,7 +140,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -144,7 +151,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -155,18 +162,51 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard",
-                    "action": "Movement",
+                    "action": "DeltaMovement",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
                     "name": "",
-                    "id": "712174cb-4fc5-4d9b-a7ae-3c003870727b",
-                    "path": "<Mouse>/delta",
+                    "id": "c08c78b0-9f33-4fc1-b679-ffce46e856db",
+                    "path": "<Touchscreen>/Press",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "Movement",
+                    "groups": "Mobile",
+                    "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e4c778e8-c8e6-442d-8dd8-e2d91342cf52",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Drag",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "afbbd6d8-a687-469a-98c7-f751fcbf65c2",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mobile",
+                    "action": "TouchMovement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2faf5223-fcf7-4df2-a712-d12e03dbb97b",
+                    "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "TouchMovement",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

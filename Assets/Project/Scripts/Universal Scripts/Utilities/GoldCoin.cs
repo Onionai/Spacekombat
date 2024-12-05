@@ -37,7 +37,7 @@ namespace Onion_AI
             PlayerManager playerManager = other.GetComponentInParent<PlayerManager>();
             if (playerManager != null)
             {
-                playerManager.coinCount += coinCount;
+                playerManager.coinCount += Mathf.CeilToInt(playerManager.coinMultiplier * coinCount);
                 ReleaseFromPool();
             }
         }

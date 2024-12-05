@@ -1,23 +1,31 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 
 namespace Onion_AI
 {
     public class CharacterCombat : MonoBehaviour
     {
         //Manager
-        public CharacterManager characterManager {get; private set;}
         protected float deltaTime;
+        public CharacterManager characterManager {get; private set;}
 
         [Header("Parameters")]
         [SerializeField] protected float fireRate;
-        [field: SerializeField] public float damageModifier {get; private set;}
         [field: SerializeField] public List<Transform> firePoints {get; protected set;} = new();
+
+        [Header("Damage Modifiers")]
+        public float currentDamageModifier;
+        [field: SerializeField] public float damageModifier { get; protected set; }
 
         public virtual void Awake()
         {
             GetFirePoints();
             characterManager = GetComponentInParent<CharacterManager>();
+        }
+
+        protected virtual void Start()
+        {
+            currentDamageModifier = damageModifier;
         }
 
         public virtual void CharacterCombat_Update(float delta)

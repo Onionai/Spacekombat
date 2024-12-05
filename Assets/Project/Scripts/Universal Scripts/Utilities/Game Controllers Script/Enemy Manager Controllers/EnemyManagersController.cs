@@ -126,9 +126,15 @@ namespace Onion_AI
         //Functionalities
         #region Public Functions
 
-        public void KilledTarget()
+        public void KilledEnemy()
         {
-            killedEnemies += 1;
+            killedEnemies++;
+            gameManager.playerManager.killCount++;
+
+            if(gameManager.playerManager.killCount % 5 == 0)
+            {
+                gameManager.SpawnPoweerUp();
+            }
         }
 
         #endregion

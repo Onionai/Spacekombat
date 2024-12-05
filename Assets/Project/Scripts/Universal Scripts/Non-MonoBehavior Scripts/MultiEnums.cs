@@ -1,5 +1,13 @@
 namespace Onion_AI
 {
+    public enum PowerUpType
+    {
+        Coin,
+        Health,
+        Shield,
+        Damage
+    }
+
     public enum TaskType
     {
         Socials,

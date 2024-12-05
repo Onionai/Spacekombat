@@ -49,7 +49,8 @@ namespace Onion_AI
                 characterManager.isDead = true;
 
                 InstantiateCoin();
-                enemyManager.enemyManagersController.KilledTarget();
+                
+                enemyManager.enemyManagersController.KilledEnemy();
                 enemyManager.gameManager.audioManager.PlaySound(111);
                 LevelSpawners.RandomParticleEffect(transform.position, Quaternion.identity, enemyManager.gameManager.levelSpawners.explosionFXArray);
 

@@ -20,10 +20,16 @@ namespace Onion_AI
             playerManager = characterManager as PlayerManager;
         }
 
-        private void Start()
+        protected override void Start()
         {
+            base.Start();
             playerBulletData = Instantiate(playerBulletData);
             playerBulletData.InitializeWeaponData();
+        }
+
+        public void IncreaseCurrentDamageModifier(float value)
+        {
+            currentDamageModifier += value;
         }
 
         public override void CharacterCombat_Update(float delta)

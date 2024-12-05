@@ -28,9 +28,27 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             ""id"": ""3385e5d4-bc99-4d41-a2dd-f0d905dcd7e9"",
             ""actions"": [
                 {
-                    ""name"": ""Movement"",
+                    ""name"": ""Drag"",
+                    ""type"": ""Button"",
+                    ""id"": ""f552bc65-85f1-4cb3-bdb1-b6aaf8cc3503"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DeltaMovement"",
                     ""type"": ""PassThrough"",
                     ""id"": ""3748fec8-6bf5-4a82-acd9-83988cf4c811"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""TouchMovement"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""b66cf287-d72f-4c66-ae63-abf362a8f39d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -45,7 +63,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -56,7 +74,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -67,7 +85,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -78,7 +96,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -89,20 +107,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7400cfe0-8a92-42f4-9ff0-b62210ccc40d"",
-                    ""path"": ""<Touchscreen>/primaryTouch/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Mobile"",
-                    ""action"": ""Movement"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -111,7 +118,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -122,7 +129,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -133,7 +140,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -144,7 +151,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -155,7 +162,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -166,7 +173,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -177,18 +184,51 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard"",
-                    ""action"": ""Movement"",
+                    ""action"": ""DeltaMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
                 {
                     ""name"": """",
-                    ""id"": ""712174cb-4fc5-4d9b-a7ae-3c003870727b"",
-                    ""path"": ""<Mouse>/delta"",
+                    ""id"": ""c08c78b0-9f33-4fc1-b679-ffce46e856db"",
+                    ""path"": ""<Touchscreen>/Press"",
                     ""interactions"": """",
                     ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Movement"",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e4c778e8-c8e6-442d-8dd8-e2d91342cf52"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""Drag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""afbbd6d8-a687-469a-98c7-f751fcbf65c2"",
+                    ""path"": ""<Touchscreen>/primaryTouch/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Mobile"",
+                    ""action"": ""TouchMovement"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2faf5223-fcf7-4df2-a712-d12e03dbb97b"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""TouchMovement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -233,7 +273,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
 }");
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
-        m_Movement_Movement = m_Movement.FindAction("Movement", throwIfNotFound: true);
+        m_Movement_Drag = m_Movement.FindAction("Drag", throwIfNotFound: true);
+        m_Movement_DeltaMovement = m_Movement.FindAction("DeltaMovement", throwIfNotFound: true);
+        m_Movement_TouchMovement = m_Movement.FindAction("TouchMovement", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -295,12 +337,16 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     // Movement
     private readonly InputActionMap m_Movement;
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
-    private readonly InputAction m_Movement_Movement;
+    private readonly InputAction m_Movement_Drag;
+    private readonly InputAction m_Movement_DeltaMovement;
+    private readonly InputAction m_Movement_TouchMovement;
     public struct MovementActions
     {
         private @Controls m_Wrapper;
         public MovementActions(@Controls wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Movement => m_Wrapper.m_Movement_Movement;
+        public InputAction @Drag => m_Wrapper.m_Movement_Drag;
+        public InputAction @DeltaMovement => m_Wrapper.m_Movement_DeltaMovement;
+        public InputAction @TouchMovement => m_Wrapper.m_Movement_TouchMovement;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,16 +356,28 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         {
             if (instance == null || m_Wrapper.m_MovementActionsCallbackInterfaces.Contains(instance)) return;
             m_Wrapper.m_MovementActionsCallbackInterfaces.Add(instance);
-            @Movement.started += instance.OnMovement;
-            @Movement.performed += instance.OnMovement;
-            @Movement.canceled += instance.OnMovement;
+            @Drag.started += instance.OnDrag;
+            @Drag.performed += instance.OnDrag;
+            @Drag.canceled += instance.OnDrag;
+            @DeltaMovement.started += instance.OnDeltaMovement;
+            @DeltaMovement.performed += instance.OnDeltaMovement;
+            @DeltaMovement.canceled += instance.OnDeltaMovement;
+            @TouchMovement.started += instance.OnTouchMovement;
+            @TouchMovement.performed += instance.OnTouchMovement;
+            @TouchMovement.canceled += instance.OnTouchMovement;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
         {
-            @Movement.started -= instance.OnMovement;
-            @Movement.performed -= instance.OnMovement;
-            @Movement.canceled -= instance.OnMovement;
+            @Drag.started -= instance.OnDrag;
+            @Drag.performed -= instance.OnDrag;
+            @Drag.canceled -= instance.OnDrag;
+            @DeltaMovement.started -= instance.OnDeltaMovement;
+            @DeltaMovement.performed -= instance.OnDeltaMovement;
+            @DeltaMovement.canceled -= instance.OnDeltaMovement;
+            @TouchMovement.started -= instance.OnTouchMovement;
+            @TouchMovement.performed -= instance.OnTouchMovement;
+            @TouchMovement.canceled -= instance.OnTouchMovement;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -366,6 +424,8 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     }
     public interface IMovementActions
     {
-        void OnMovement(InputAction.CallbackContext context);
+        void OnDrag(InputAction.CallbackContext context);
+        void OnDeltaMovement(InputAction.CallbackContext context);
+        void OnTouchMovement(InputAction.CallbackContext context);
     }
 }

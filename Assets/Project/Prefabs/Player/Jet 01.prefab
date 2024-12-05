@@ -234,8 +234,8 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0}
   <mainCamera>k__BackingField: {fileID: 0}
   <cameraObject>k__BackingField: {fileID: 0}
-  <acceleration>k__BackingField: 20
-  <movementSpeed>k__BackingField: 50
+  <acceleration>k__BackingField: 15
+  <movementSpeed>k__BackingField: 25
   <topPadding>k__BackingField: -3
   <leftPadding>k__BackingField: 0.75
   <rightPadding>k__BackingField: 0.75

@@ -157,8 +157,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 10
-  firePoints: []
   <damageModifier>k__BackingField: 2
+  <firePoints>k__BackingField: []
   fireAudioClip: {fileID: 8300000, guid: 7e345b3fc81baef4b9c77aab542f574b, type: 3}
   combatAudioSource: {fileID: 816235696910047860}
   playerBulletData: {fileID: 11400000, guid: 785a76847100b5a419b71f5700ad2dbc, type: 2}
@@ -476,11 +476,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <healthBarUI>k__BackingField: {fileID: 0}
   isDead: 0
+  canShoot: 0
   isMoving: 0
   <characterType>k__BackingField: 1
   coinCount: 0
-  canShoot: 0
-  hasReloaded: 0
 --- !u!114 &4959168953010776067
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,9 +524,8 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0}
   <mainCamera>k__BackingField: {fileID: 0}
   <cameraObject>k__BackingField: {fileID: 0}
-  <acceleration>k__BackingField: 20
-  <movementSpeed>k__BackingField: 20
-  <rotationSpeed>k__BackingField: 20
+  <acceleration>k__BackingField: 15
+  <movementSpeed>k__BackingField: 25
   <topPadding>k__BackingField: -3
   <leftPadding>k__BackingField: 0.35
   <rightPadding>k__BackingField: 0.35

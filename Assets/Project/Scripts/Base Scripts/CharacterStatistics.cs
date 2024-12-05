@@ -7,7 +7,7 @@ namespace Onion_AI
         protected CharacterManager characterManager;
 
         //Parameters
-        [SerializeField] private float healthLevel;
+        [SerializeField] protected float healthLevel;
         public float currentHealth {get; protected set;}
 
         protected virtual void Awake()

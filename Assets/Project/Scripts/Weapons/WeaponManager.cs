@@ -41,7 +41,7 @@ namespace Onion_AI
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if(other.CompareTag("Bullet"))
+            if (other.CompareTag("Bullet") || other.CompareTag("Shield"))
             {
                 ReleaseFromPool();
                 return;

@@ -10,7 +10,7 @@ namespace Onion_AI
 
         public void OnBulletColliderHit(Collider2D other, LevelSpawners levelSpawners, CharacterManager characterDamaged)
         {
-            if(characterDamaged.isDead)
+            if (characterDamaged.isDead)
             {
                 return;
             }
@@ -19,10 +19,11 @@ namespace Onion_AI
             {
                 return;
             }
-            
+
+            damageValue = characterCausingDamage.characterCombat.currentDamageModifier * damageModifier;
+
             characterDamaged.characterStatistics.TakeDamage(damageValue);
             Vector2 contactPoint = other.ClosestPoint(transform.position);
-            damageValue = characterCausingDamage.characterCombat.damageModifier * damageModifier;
             LevelSpawners.RandomParticleEffect(contactPoint, Quaternion.identity, levelSpawners.impactFXArray);
         }
     }

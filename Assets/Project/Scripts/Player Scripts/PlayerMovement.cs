@@ -51,23 +51,47 @@ namespace Onion_AI
         private Vector2 TargetPosition(float delta)
         {
             Vector2 movePosition = targetPosition = acceleration * movementSpeed * EnvironmentManager.gameSpeedMultiplier * moveDirection;
-
-            if(playerManager.playerInput.IsCurrentDeviceMouse())
-            {
-                return 2f * movePosition;
-            }
             return delta * movePosition;
         }
 
         protected override void HandleMovement(float delta)
         {
-            if(moveDirection != Vector2.zero)
-            {
-                targetPosition = TargetPosition(delta) + playerManager.rigidBody.position;
+            bool isTouch = PlayerInput.IsCurrentDeviceMouse();
 
-                Vector2 smoothPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
-                playerManager.rigidBody.MovePosition(smoothPosition);
+            if(isTouch)
+            {
+                HandleTouchMovement(delta);
+                return;
             }
+            HandleDeltaMovement(delta);
+        }
+
+        // Touch or Mouse Input, Enables Dragging
+        private void HandleTouchMovement(float delta)
+        {
+            if(playerManager.isMoving == false)
+            {
+                return;
+            }
+
+            Vector3 touchPosition = new Vector3(playerManager.playerInput.horizontalMoveAmount, playerManager.playerInput.verticalMoveAmount, 0f);
+            targetPosition = mainCamera.ScreenToWorldPoint(touchPosition);
+
+            transform.position = Vector3.Lerp(transform.position, targetPosition, delta * movementSpeed);
+        }
+
+        //Gamepad or Keyboard Input, Enables Swiping
+        private void HandleDeltaMovement(float delta)
+        {
+            if (moveDirection == Vector2.zero)
+            {
+                return;
+            }
+
+            targetPosition = TargetPosition(delta) + playerManager.rigidBody.position;
+
+            Vector2 smoothPosition = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, smoothTime);
+            playerManager.rigidBody.MovePosition(smoothPosition);
         }
     }
 }
