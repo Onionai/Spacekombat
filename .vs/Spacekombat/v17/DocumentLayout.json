@@ -3,16 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|c:\\users\\tthom\\desktop\\projects\\game dev\\spacekombat\\assets\\project\\scripts\\player scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|solutionrelative:assets\\project\\scripts\\player scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|c:\\users\\tthom\\desktop\\projects\\game dev\\spacekombat\\assets\\project\\scripts\\powerups\\powerupclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|solutionrelative:assets\\project\\scripts\\powerups\\powerupclass.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|c:\\users\\tthom\\desktop\\projects\\game dev\\spacekombat\\assets\\project\\scripts\\universal scripts\\utilities\\aeonpaymentsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|solutionrelative:assets\\project\\scripts\\universal scripts\\utilities\\aeonpaymentsystem.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|c:\\users\\tthom\\desktop\\projects\\game dev\\spacekombat\\assets\\project\\scripts\\enemy scripts\\enemymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|solutionrelative:assets\\project\\scripts\\enemy scripts\\enemymanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\assets\\project\\scripts\\base scripts\\charactermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|solutionrelative:assets\\project\\scripts\\base scripts\\charactermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\assets\\project\\scripts\\player scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3AE97DB8-A588-12E2-3B21-6F0D6AB72635}|Onion-AI.csproj|solutionrelative:assets\\project\\scripts\\player scripts\\playermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -27,41 +31,52 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "PlayerManager.cs",
-              "DocumentMoniker": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
-              "RelativeDocumentMoniker": "Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
-              "ToolTip": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
-              "RelativeToolTip": "Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
-              "ViewState": "AQIAAEAAAAAAAAAAAAAYwFEAAAAvAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T20:11:44.105Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PowerUpClass.cs",
-              "DocumentMoniker": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\PowerUps\\PowerUpClass.cs",
-              "RelativeDocumentMoniker": "Assets\\Project\\Scripts\\PowerUps\\PowerUpClass.cs",
-              "ToolTip": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\PowerUps\\PowerUpClass.cs",
-              "RelativeToolTip": "Assets\\Project\\Scripts\\PowerUps\\PowerUpClass.cs",
-              "ViewState": "AQIAAB0AAAAAAAAAAAAIwAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T20:10:06.573Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "AeonPaymentSystem.cs",
               "DocumentMoniker": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Universal Scripts\\Utilities\\AeonPaymentSystem.cs",
               "RelativeDocumentMoniker": "Assets\\Project\\Scripts\\Universal Scripts\\Utilities\\AeonPaymentSystem.cs",
               "ToolTip": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Universal Scripts\\Utilities\\AeonPaymentSystem.cs",
               "RelativeToolTip": "Assets\\Project\\Scripts\\Universal Scripts\\Utilities\\AeonPaymentSystem.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAIA3wBoAAAAAAAAA",
+              "ViewState": "AQIAAGYAAAAAAAAAAAAmwG8AAAA2AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-12-04T11:28:58.714Z",
+              "WhenOpened": "2024-12-06T08:59:58.039Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "EnemyManager.cs",
+              "DocumentMoniker": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Enemy Scripts\\EnemyManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Project\\Scripts\\Enemy Scripts\\EnemyManager.cs",
+              "ToolTip": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Enemy Scripts\\EnemyManager.cs",
+              "RelativeToolTip": "Assets\\Project\\Scripts\\Enemy Scripts\\EnemyManager.cs",
+              "ViewState": "AQIAAB8AAAAAAAAAAAAYwBgAAAAJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-05T21:21:01.616Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CharacterManager.cs",
+              "DocumentMoniker": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Base Scripts\\CharacterManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Project\\Scripts\\Base Scripts\\CharacterManager.cs",
+              "ToolTip": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Base Scripts\\CharacterManager.cs",
+              "RelativeToolTip": "Assets\\Project\\Scripts\\Base Scripts\\CharacterManager.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-05T21:20:57.049Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PlayerManager.cs",
+              "DocumentMoniker": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
+              "RelativeDocumentMoniker": "Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
+              "ToolTip": "C:\\Users\\tthom\\Desktop\\Projects\\Game Dev\\Spacekombat\\Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
+              "RelativeToolTip": "Assets\\Project\\Scripts\\Player Scripts\\PlayerManager.cs",
+              "ViewState": "AQIAAFUAAAAAAAAAAAAzwFwAAAAiAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-12-04T20:11:44.105Z"
             }
           ]
         }

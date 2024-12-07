@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 171114016356268851}
   - component: {fileID: 5095987375085484522}
   - component: {fileID: 7683376124237378404}
+  - component: {fileID: 5984589602361800508}
   m_Layer: 0
   m_Name: Boundary Up
   m_TagString: Untagged
@@ -176,6 +177,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9696e985f5e27349b567c54bfe01165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &5984589602361800508
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6642767239481275903}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7
 --- !u!1 &8247318289013243076
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,6 +216,7 @@ GameObject:
   - component: {fileID: 9010742149116859399}
   - component: {fileID: 1110796065706329044}
   - component: {fileID: 7779694331127355283}
+  - component: {fileID: 2084171458004529246}
   m_Layer: 0
   m_Name: Boundary Down
   m_TagString: Untagged
@@ -319,3 +348,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9696e985f5e27349b567c54bfe01165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &2084171458004529246
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8247318289013243076}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 7

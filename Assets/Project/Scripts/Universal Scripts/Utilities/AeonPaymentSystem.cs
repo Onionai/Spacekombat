@@ -1,19 +1,23 @@
+using System;
 using UnityEngine;
 using System.Text;
+using System.Linq;
 using UnityEngine.UI;
 using System.Collections;
 using UnityEngine.Networking;
+using System.Collections.Generic;
+using System.Security.Cryptography;
 
 namespace Onion_AI
 {
     public class AeonPaymentSystem : MonoBehaviour
     {
-        [System.Serializable]
+        [Serializable]
         private class ResponseData
         {
             public ResponseDataDetail model;
 
-            [System.Serializable]
+            [Serializable]
             public class ResponseDataDetail
             {
                 public string webUrl;
@@ -25,7 +29,7 @@ namespace Onion_AI
         private string currency = "USD";
         private string telegramUserID = "6265640740";
 
-        private const string appId = "CPM202412040924";
+        private const string appId = "fTNv0tLTW9xtfSO8PSJJOFyu";
         private const string secretKey = "FKEA2mnyCJlpwi9ejegt7LIp3y2ExM";
         private const string aeonApiUrl = "https://sbx-crypto-payment-api.aeon.xyz/open/api/tg/payment/V2";
 
@@ -35,9 +39,8 @@ namespace Onion_AI
         private void OnEnable()
         {
             if (hasInitialized)
-            {
                 return;
-            }
+
             UIEventsStaticClass.AddButtonListener(aeonButton, OnPayButtonClick);
             hasInitialized = true;
         }
@@ -48,23 +51,73 @@ namespace Onion_AI
             StartCoroutine(CreateOrder(amount, currency, telegramUserID));
         }
 
-        private IEnumerator CreateOrder(float amount, string currency, string telegramUserID)
+        /// <summary>
+        /// Generates the signature required for the API request using only the necessary parameters.
+        /// </summary>
+        private string GenerateSignatureParameter(Dictionary<string, string> parameters, string secretKey)
         {
-            var requestData = new OrderRequestData
+            if (parameters.ContainsKey("sign"))
             {
-                appId = appId,
-                sign = secretKey,
-                merchantOrderNo = System.Guid.NewGuid().ToString(),
-                orderAmount = amount.ToString("F2"),
-                payCurrency = currency,
-                userId = telegramUserID,
-                redirectURL = "https://yourgame.com/payment-success",
-                callbackURL = "https://yourserver.com/payment-webhook",
-                tgModel = "BOT",
-                customParam = "{\"botName\":\"YourBotName\",\"orderDetail\":\"Purchase Details\",\"chatId\":\"" + telegramUserID + "\"}"
+                parameters.Remove("sign");
+            }
+
+            var requiredParameters = new Dictionary<string, string>
+            {
+                { "appId", parameters["appId"] },
+                { "merchantOrderNo", parameters["merchantOrderNo"] },
+                { "orderAmount", parameters["orderAmount"] },
+                { "payCurrency", parameters["payCurrency"] },
+                { "userId", parameters["userId"] },
+                { "paymentTokens", parameters["paymentTokens"] }
             };
 
-            string jsonData = JsonUtility.ToJson(requestData);
+            // Sort parameters alphabetically by key
+            var sortedParameters = requiredParameters.OrderBy(p => p.Key).ToList();
+            StringBuilder signBuilder = new StringBuilder();
+
+            // Append each parameter to the sign string
+            foreach (var param in sortedParameters)
+            {
+                signBuilder.Append($"{param.Key}={param.Value}&");
+            }
+            signBuilder.Append($"key={secretKey}");
+
+            string signString = signBuilder.ToString();
+            Debug.Log($"Signature string: {signString}");
+
+            // Compute SHA-512 hash of the sign string
+            using (SHA512 sha512 = SHA512.Create())
+            {
+                byte[] hashBytes = sha512.ComputeHash(Encoding.UTF8.GetBytes(signString));
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToUpper();
+            }
+        }
+
+        /// <summary>
+        /// Coroutine to create an order and process the response.
+        /// </summary>
+        private IEnumerator CreateOrder(float amount, string currency, string telegramUserID)
+        {
+            OrderRequestData orderRequestData = new OrderRequestData
+            {
+                appId = appId,
+                callbackURL = "https://cp-bba-sbx.alchemypay.org",
+                customParam = $"{{\"botName\":\"YourBotName\",\"orderDetail\":\"Special Upgrade Pack - Cyber Edition\",\"chatId\":\"{telegramUserID}\"}}",
+                expiredTime = "999999",
+                merchantOrderNo = Guid.NewGuid().ToString(),
+                orderAmount = amount.ToString(),
+                payCurrency = currency,
+                tgModel = "MINIAPP",
+                userId = telegramUserID,
+                paymentTokens = "USDT,ETH,USDC,BTC,PCI"
+            };
+
+            // Generate signature for the order
+            string signature = GenerateSignatureParameter(ToDictionary(orderRequestData), secretKey);
+            orderRequestData.sign = signature;
+
+            // Convert the order data to JSON format
+            string jsonData = JsonUtility.ToJson(orderRequestData);
 
             using (UnityWebRequest request = new UnityWebRequest(aeonApiUrl, "POST"))
             {
@@ -74,10 +127,11 @@ namespace Onion_AI
 
                 yield return request.SendWebRequest();
 
+                // Handle the response
                 if (request.result == UnityWebRequest.Result.Success)
                 {
-                    Debug.Log(request.downloadHandler.text);
                     var response = JsonUtility.FromJson<ResponseData>(request.downloadHandler.text);
+
                     if (response?.model?.webUrl != null)
                     {
                         Application.OpenURL(response.model.webUrl);
@@ -93,25 +147,40 @@ namespace Onion_AI
                 }
             }
         }
-    }
 
-    [System.Serializable]
-    public class OrderRequestData
-    {
-        public string appId;
-        public string sign;
-        public string merchantOrderNo;
-        public string orderAmount;
-        public string payCurrency;
-        public string userId;
-        public string paymentTokens;
-        public string redirectURL;
-        public string callbackURL;
-        public string customParam;
-        public string expiredTime;
-        public string payType;
-        public string paymentNetworks;
-        public string orderModel = "ORDER";
-        public string tgModel;
+        [Serializable]
+        public class OrderRequestData
+        {
+            public string appId;
+            public string callbackURL;
+            public string customParam;
+            public string expiredTime;
+
+            public string merchantOrderNo;
+            public string orderAmount;
+            public string orderModel = "ORDER";
+            public string payCurrency;
+            public string sign;
+            public string tgModel;
+            public string userId;
+            public string paymentTokens;
+        }
+
+        /// <summary>
+        /// Convert OrderRequestData to Dictionary for signature generation with only required parameters.
+        /// </summary>
+        private Dictionary<string, string> ToDictionary(OrderRequestData data)
+        {
+            var dict = new Dictionary<string, string>
+            {
+                { "appId", data.appId },
+                { "merchantOrderNo", data.merchantOrderNo },
+                { "orderAmount", data.orderAmount },
+                { "payCurrency", data.payCurrency },
+                { "userId", data.userId },
+                { "paymentTokens", data.paymentTokens }
+            };
+            return dict;
+        }
     }
 }
