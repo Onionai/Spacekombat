@@ -685,6 +685,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be16e4bb0575cbe449cd69727c74692d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fireRate: 1.35
-  <damageModifier>k__BackingField: 1
+  fireRate: 0.75
   <firePoints>k__BackingField: []
+  currentDamageModifier: 0
+  <damageModifier>k__BackingField: 1

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: CCD
+  m_EditorClassIdentifier: 
+  m_GroupName: CCD
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 8ad2e16acf3fef643b87ca7d6ca25239
+  m_SerializeEntries:
+  - m_GUID: 7e8bd44e977c5bc4b8d1baeef0c01646
+    m_Address: Assets/Project/Prefabs/Levels/Level 01.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Level 01
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d4df38d8dd2af8140bca2ce2826c2729, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: b2d971270d625dd4588a7056b5548aea, type: 2}

@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 1366
     height: 685
   m_ShowMode: 4
-  m_Title: Simulator
+  m_Title: Console
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 300}
   m_MaxSize: {x: 10000, y: 10000}
@@ -215,8 +215,8 @@ MonoBehaviour:
     y: 0
     width: 773
     height: 373
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 14}
@@ -224,7 +224,7 @@ MonoBehaviour:
   - {fileID: 17}
   - {fileID: 18}
   m_Selected: 3
-  m_LastSelected: 0
+  m_LastSelected: 2
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -249,7 +249,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 50}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 100
+  controlID: 133
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -267,7 +267,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 532
+    width: 564
     height: 262
   m_MinSize: {x: 231, y: 271}
   m_MaxSize: {x: 10001, y: 10021}
@@ -294,9 +294,9 @@ MonoBehaviour:
   m_Children: []
   m_Position:
     serializedVersion: 2
-    x: 532
+    x: 564
     y: 0
-    width: 508
+    width: 476
     height: 262
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 4000, y: 4000}
@@ -806,9 +806,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 1.2176653, y: 1.7248626, z: -3.5266633}
+    m_Target: {x: 390.82495, y: 1140, z: 0}
     speed: 2
-    m_Value: {x: 1.2176653, y: 1.7248626, z: -3.5266633}
+    m_Value: {x: 390.82495, y: 1140, z: 0}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -858,9 +858,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 3.1628916
+    m_Target: 1433.5098
     speed: 2
-    m_Value: 3.1628916
+    m_Value: 1433.5098
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -922,9 +922,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 78860000
+      m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 10fbffffdc870000
+      m_ExpandedIDs: 06e1ffff66e1ffffc6e4ffff16e5ffff3ee5ffff76f1ffff6ef6ffffdaf6ffff0afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -968,9 +968,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 283
+    x: 267
     y: 73
-    width: 738
+    width: 771
     height: 352
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1123,9 +1123,9 @@ MonoBehaviour:
   m_GroupEditor:
     m_TreeState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 
-      m_LastClickedID: 0
-      m_ExpandedIDs: bb6de80f
+      m_SelectedIDs: d487bba5
+      m_LastClickedID: -1514436652
+      m_ExpandedIDs: 5d8bb3f0bb6de80f
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1141,7 +1141,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 0}
+        m_ClientGUIView: {fileID: 9}
       m_SearchString: 
     m_Mchs:
       m_Columns:
@@ -1317,7 +1317,7 @@ MonoBehaviour:
     serializedVersion: 2
     x: 0
     y: 446
-    width: 531
+    width: 563
     height: 241
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -1340,7 +1340,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Project/Scenes
+    - Assets/Project/Prefabs/Levels
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -1348,16 +1348,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Project/Scenes
+  - Assets/Project/Prefabs/Levels
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\tthom\Desktop\Projects\Game Dev\Spacekombat
   m_LockTracker:
-    m_IsLocked: 1
+    m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 471}
-    m_SelectedIDs: 24950000
-    m_LastClickedID: 38180
-    m_ExpandedIDs: 00000000029500000495000006950000089500000a9500000c9500000e95000010950000129500001495000016950000189500001a9500001c9500002295000000ca9a3b
+    scrollPos: {x: 0, y: 307}
+    m_SelectedIDs: d8900000
+    m_LastClickedID: 37080
+    m_ExpandedIDs: 000000000c9000000e90000010900000129000001490000016900000189000001a9000001c9000001e900000209000002290000024900000269000003090000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1385,7 +1385,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000029500000495000006950000089500000a9500000c9500000e95000010950000129500001495000016950000189500001a9500001c950000
+    m_ExpandedIDs: 000000000c9000000e90000010900000129000001490000016900000189000001a9000001c9000001e90000020900000229000002490000026900000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1412,7 +1412,7 @@ MonoBehaviour:
   m_ListAreaState:
     m_SelectedInstanceIDs: 
     m_LastClickedInstanceID: 0
-    m_HadKeyboardFocusLastEvent: 0
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: c6230000067c03004e770300567703007eda03006eda0300309c03002c9c03002e9c03006ada03006e8203008ada0300e8950300e4950300e65c0300de5c0300e25c03007e0707000a190700d8f90700e8f907000ea4010038390100423a0100583a0100fefe0000eef40000c6130100d013010056040100ca8b0000b0c40400521706001acc02008ecb02002ccb02009ccc0200fcca0200c0cb020052cc0200a0a5000000000000a8c40400b2c40400acc40400741404009c450200981804001a4602009a180400b4b3000080c3000092c3000066c300009cd8000064b800003ac20000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -2813,9 +2813,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 616
+    x: 564
     y: 446
-    width: 422
+    width: 474
     height: 241
   m_SerializedDataModeController:
     m_DataMode: 0
@@ -2838,8 +2838,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Project/Models/Character Sprites/Spaceship 1/Animation Images/Spaceship
-      1 Flight Finished
+    - Assets/Project/Prefabs/Levels
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -2847,17 +2846,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Project/Models/Character Sprites/Spaceship 1/Animation Images/Spaceship
-    1 Flight Finished
+  - Assets/Project/Prefabs/Levels
   m_LastFoldersGridSize: -1
   m_LastProjectPath: C:\Users\tthom\Desktop\Projects\Game Dev\Spacekombat
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 339}
-    m_SelectedIDs: ceaa0000
-    m_LastClickedID: 43726
-    m_ExpandedIDs: 00000000029500000495000006950000089500000a9500000c9500000e95000010950000129500001495000016950000189500001a9500001c950000
+    scrollPos: {x: 0, y: 371}
+    m_SelectedIDs: a4950000
+    m_LastClickedID: 38308
+    m_ExpandedIDs: 000000000c9000000e90000010900000129000001490000016900000189000001a9000001c9000001e90000020900000229000002490000026900000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2885,7 +2883,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000029500000495000006950000089500000a9500000c9500000e95000010950000129500001495000016950000189500001a9500001c950000
+    m_ExpandedIDs: 000000000c9000000e90000010900000129000001490000016900000189000001a9000001c9000001e90000020900000229000002490000026900000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2910,8 +2908,8 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 42d10000
-    m_LastClickedInstanceID: 53570
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
     m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: a40e010094bd000098830300027003000a5703004c8d03000a5a03006e5c0300c85b0300e25c030052770300745e0300165a030044800300f6960300d65e0300b2840300fe7b0300027c0300067c03004e77030056770300508203005c820300309c0300249c03008ada03003e92040092920400d2920400ea920400f8920400a2c60000aa3302003cab010018ad01006aaa01009aa60100a8a60100b6a60100c4a60100d2a60100e0a6010014a801000edb05007ee10500d4d90500b06b0100906f010054e80000d0130100c613010000cd00005604010024b803001aee0200d8eb02009a880000a8c40400b0c404001acc02008ecb02002ccb02009ccc0200fcca0200c0cb020052cc0200a0a50000423206003eb60200a496000000000000b4b3000078b30000dab2000092b300004012010070120100dc0d0100a094010076b3000062b30000bcb30000f6b200000eb30000bc990000c08e0000
     m_RenameOverlay:
@@ -2961,9 +2959,9 @@ MonoBehaviour:
     m_Tooltip: 
   m_Pos:
     serializedVersion: 2
-    x: 532
+    x: 564
     y: 446
-    width: 506
+    width: 474
     height: 241
   m_SerializedDataModeController:
     m_DataMode: 0
