@@ -11,6 +11,11 @@ namespace Onion_AI
             button.onClick.AddListener(() => function());
         }
 
+        public static void RemoveButtonListener(Button button, System.Action function)
+        {
+            button.onClick.RemoveListener(() => function());
+        }
+
         public static void LoadNewScene(string sceneName)
         {
             SceneManager.LoadScene(sceneName, LoadSceneMode.Single);

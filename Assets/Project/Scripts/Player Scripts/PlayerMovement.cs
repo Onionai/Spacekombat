@@ -26,8 +26,8 @@ namespace Onion_AI
             {
                 return;
             }
-            moveDirection = playerManager.playerInput.verticalMoveAmount * cameraObject.up;
-            moveDirection += (Vector2) (playerManager.playerInput.horizontalMoveAmount * cameraObject.right);
+            moveDirection = playerManager.Input.verticalMoveAmount * cameraObject.up;
+            moveDirection += (Vector2) (playerManager.Input.horizontalMoveAmount * cameraObject.right);
             moveDirection.Normalize();
         }
 
@@ -50,7 +50,7 @@ namespace Onion_AI
 
         private Vector2 TargetPosition(float delta)
         {
-            Vector2 movePosition = targetPosition = acceleration * movementSpeed * EnvironmentManager.gameSpeedMultiplier * moveDirection;
+            Vector2 movePosition = targetPosition = movementSpeed * EnvironmentManager.gameSpeedMultiplier * moveDirection;
             return delta * movePosition;
         }
 
@@ -74,7 +74,7 @@ namespace Onion_AI
                 return;
             }
 
-            Vector3 touchPosition = new Vector3(playerManager.playerInput.horizontalMoveAmount, playerManager.playerInput.verticalMoveAmount, 0f);
+            Vector3 touchPosition = new Vector3(playerManager.Input.horizontalMoveAmount, playerManager.Input.verticalMoveAmount, 0f);
             targetPosition = mainCamera.ScreenToWorldPoint(touchPosition);
 
             transform.position = Vector3.Lerp(transform.position, targetPosition, delta * movementSpeed);

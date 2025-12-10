@@ -20,28 +20,31 @@ namespace Onion_AI
         [Header("Task Panel")]
         [SerializeField] private GameObject taskPanel;
         [SerializeField] private TextMeshProUGUI totalScoreUI;
+        [SerializeField] private TextMeshProUGUI totalCoinsUI;
+
+        private void Awake()
+        {
+            uIManager = GetComponentInParent<UIManager>();
+        }
 
         private void OnEnable()
         {
-            if(uIManager == null)
-            {
-                uIManager = GetComponentInParent<UIManager>();
-                totalScoreUI.text = "Total Score: " + GameManager.totalScore;
-            }
-            
             uIManager.PauseButton.interactable = false;
+
+            GameManager gameManager = GameManager.Instance;
+            //totalScoreUI.text = "Total Score: " + gameManager.totalScore;
+            totalCoinsUI.text = "Total Coins: " + gameManager.playerManager.coinCount;
 
             AddListeners();
             Time.timeScale = 0;
-            GameManager.gameState = GameState.Paused;
+            GameManager.Instance.Controller.SwitchGameState(GamePlayState.PlayerPause);
         }
 
         private void OnDisable()
         {
-            //Unpause Game
             Time.timeScale = 1;
             uIManager.PauseButton.interactable = true;
-            GameManager.gameState = GameState.Active;
+            GameManager.Instance.Controller.SwitchGameState(GamePlayState.Active);
         }
 
         private void AddListeners()
@@ -65,12 +68,10 @@ namespace Onion_AI
 
         public void StartNewGame()
         {
-            if(HealthCounterManager.Instance.currentLifeCount <= 0)
+            if(TriesCounterManager.Instance.CurrentTriesNumber <= 0)
             {
-                HealthCounterManager.Instance.currentLifeCount = 0;
                 return;
             }
-            
             gameObject.SetActive(false);
             UIEventsStaticClass.LoadNewScene("Game Scene");
         }

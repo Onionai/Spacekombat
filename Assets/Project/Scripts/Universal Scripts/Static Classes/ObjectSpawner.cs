@@ -61,24 +61,5 @@ namespace Onion_AI
             );
             return objectPool;
         }
-
-        public static ObjectPool<EnemyManagersController> PoolEnemyControllers(GameManager GM, EnemyManagersController objectToPool)
-        {
-            ObjectPool<EnemyManagersController> objectPool = new ObjectPool<EnemyManagersController>
-            (
-                () => {return GameObject.Instantiate(objectToPool);},
-                spawnObject => {GetEnemyController(GM, spawnObject);},
-                spawnObject => {spawnObject.gameObject.SetActive(false);},
-                spawnObject => {GameObject.Destroy(spawnObject.gameObject);},
-                false, 10, 20
-            );
-            return objectPool;
-        }
-
-        private static void GetEnemyController(GameManager GM, EnemyManagersController spawnObject)
-        {
-            spawnObject.InitializeController(GM);
-            spawnObject.gameObject.SetActive(true);
-        }
     }
 }

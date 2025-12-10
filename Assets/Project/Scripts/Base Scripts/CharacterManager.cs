@@ -9,7 +9,6 @@ namespace Onion_AI
         public Rigidbody2D rigidBody {get; private set;}
 
         //OnionAI Components
-        public GameManager gameManager {get; protected set;}
         public CharacterCombat characterCombat {get; private set;}
         public CharacterMovement characterMovement {get; private set;}
         public CharacterStatistics characterStatistics {get; private set;}
@@ -49,7 +48,7 @@ namespace Onion_AI
                 return;
             }
 
-            if(GameManager.gameState != GameState.Active)
+            if(GameManager.Instance.CompareGameStatus(GamePlayState.Active) != true)
             {
                 return;
             }
@@ -64,7 +63,7 @@ namespace Onion_AI
                 return;
             }
 
-            if(GameManager.gameState != GameState.Active)
+            if (GameManager.Instance.CompareGameStatus(GamePlayState.Active) != true)
             {
                 return;
             }
@@ -74,5 +73,7 @@ namespace Onion_AI
             characterStatistics.CharacterStatistics_Update();
             characterMovement.CharacterMovement_Update(delta);
         }
+
+  
     }
 }

@@ -46,7 +46,7 @@ namespace Onion_AI
 
             AddListeners();
             Time.timeScale = 0;
-            GameManager.gameState = GameState.Paused;
+            GameManager.Instance.Controller.SwitchGameState(GamePlayState.PlayerPause);
         }
 
         private void OnDisable()

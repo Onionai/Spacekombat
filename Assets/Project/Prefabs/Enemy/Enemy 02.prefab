@@ -46,8 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 2.75
-  <damageModifier>k__BackingField: 1
   <firePoints>k__BackingField: []
+  currentDamageModifier: 0
+  <damageModifier>k__BackingField: 1
 --- !u!1 &2374804171906115471
 GameObject:
   m_ObjectHideFlags: 0
@@ -364,9 +365,9 @@ MonoBehaviour:
   canShoot: 0
   isMoving: 0
   <characterType>k__BackingField: 0
-  <enemyManagersController>k__BackingField: {fileID: 0}
+  <Controller>k__BackingField: {fileID: 0}
   attemptSuicide: 0
-  hasReachedFormation: 0
+  hasReachedTarget: 0
   <enemyType>k__BackingField: 1
 --- !u!114 &7836090907475839825
 MonoBehaviour:
@@ -396,12 +397,13 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0}
   <mainCamera>k__BackingField: {fileID: 0}
   <cameraObject>k__BackingField: {fileID: 0}
-  <acceleration>k__BackingField: 2
-  <movementSpeed>k__BackingField: 10
+  <movementSpeed>k__BackingField: 2
   <topPadding>k__BackingField: -12.55
   <leftPadding>k__BackingField: -22.5
   <rightPadding>k__BackingField: -22.5
   <bottomPadding>k__BackingField: 5
+  constrainMovement: 0
+  waveSpeedMultiplier: 0
 --- !u!1 &7134595374384561687
 GameObject:
   m_ObjectHideFlags: 0

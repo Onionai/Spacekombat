@@ -18,7 +18,6 @@ namespace Onion_AI
         [field: SerializeField] public Transform cameraObject {get; private set;}
 
         [field: Header("Player Stats")]
-        [field: SerializeField] public float acceleration {get; private set;} = 10;
         [field: SerializeField] public float movementSpeed {get; private set;} = 100;
 
         [field: Header("Clamped Position")]
@@ -52,10 +51,14 @@ namespace Onion_AI
 
         protected Vector3 ClampedMovement(Vector3 position)
         {
-            float xPos = Mathf.Clamp(position.x, characterManager.gameManager.minCameraBounds.x + leftPadding, characterManager.gameManager.maxCameraBounds.x - rightPadding);
-            float yPos = Mathf.Clamp(position.y, characterManager.gameManager.minCameraBounds.y + bottomPadding, characterManager.gameManager.maxCameraBounds.y - topPadding);
+            GameManager game = GameManager.Instance;
+            Vector2 minCameraBounds = game.minCameraBounds;
+            Vector2 maxCameraBounds = game.maxCameraBounds;
 
-            Vector3 clampedPosition = new Vector3(xPos, yPos, position.z);
+            float xPos = Mathf.Clamp(position.x, minCameraBounds.x + leftPadding, maxCameraBounds.x - rightPadding);
+            float yPos = Mathf.Clamp(position.y, minCameraBounds.y + bottomPadding, maxCameraBounds.y - topPadding);
+
+            Vector3 clampedPosition = new(xPos, yPos, position.z);
             return clampedPosition;
         }
 

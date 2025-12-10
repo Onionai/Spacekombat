@@ -12,7 +12,7 @@ namespace Onion_AI
         }
 
         public static PlayerTaskManager Instance;
-        public List<Task> taskList = new List<Task>();
+        public List<Task> taskList = new();
         private const string TaskDataKey = "NewTaskData";
 
 
@@ -44,12 +44,6 @@ namespace Onion_AI
             {
                 TaskPanel.Instance.RefreshTaskPanel(taskList);
             }
-        }
-
-        public void PopulateTaskList(UserProfile userProfile)
-        {
-            taskList.Clear();
-            taskList.AddRange(userProfile.taskList);
         }
 
         public void UpdateAllTasks(TaskRewards taskRewards)

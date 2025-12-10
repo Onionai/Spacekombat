@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Onion_AI
 {
-    public class PowerUpClass : MonoBehaviour, IReleaseFromPool
+    public class PowerUpClass : MonoBehaviour
     {
         protected PowerUpClass currentPowerUP;
 
@@ -10,27 +10,31 @@ namespace Onion_AI
         [SerializeField] protected float speed;
         [SerializeField] protected float expirationTime;
         [SerializeField] protected float valueMultiplier;
-        [field: SerializeField] public PowerUpType powerUpType { get; protected set; } = PowerUpType.Coin;
+        [field: SerializeField] public PowerUpType PowerUpType { get; protected set; } = PowerUpType.Coin;
 
-        protected virtual void SetPowerUp(PlayerManager playerManager)
+        private void SetNewPowerUp(PlayerManager playerManager)
         {
+            if (CheckIfSamePowerUpType(playerManager))
+            {
+                IncreaseCurrentParameters(expirationTime * 0.5f, playerManager);
+                Destroy(gameObject, 3.0f);
+                return;
+            }
             currentPowerUP = playerManager.currentPowerUp;
         }
 
         private void FixedUpdate()
         {
-            transform.position += Vector3.down * speed * Time.deltaTime;
-        }
-
-        public void ReleaseFromPool()
-        {
-            Destroy(gameObject, 0.2f);
+            transform.position += speed * Time.deltaTime * Vector3.down;
         }
 
         public virtual void ApplyPowerUp(PlayerManager playerManager)
         {
-            SetPowerUp(playerManager);
-            gameObject.SetActive(false);
+            SetNewPowerUp(playerManager);
+            if (gameObject != null)
+            {
+                gameObject.SetActive(false);
+            }
         }
 
         public virtual void EndPowerUp(PlayerManager playerManager)
@@ -45,9 +49,18 @@ namespace Onion_AI
             playerManager.expirationTime = expirationTime;
         }
 
+        public bool CheckIfSamePowerUpType(PowerUpType type)
+        {
+            return PowerUpType.Equals(type);
+        }
+
+        protected bool CheckIfSamePowerUpType(PlayerManager playerManager)
+        {
+            return (playerManager.currentPowerUp != null && playerManager.currentPowerUp.PowerUpType.Equals(PowerUpType));
+        }
+
         protected void IncreaseCurrentParameters(float expireTime, PlayerManager playerManager)
         {
-            playerManager.currentPowerUp = this;
             playerManager.expirationTime += expireTime;
         }
     }

@@ -5,158 +5,102 @@ namespace Onion_AI
 {
     public class EnemySpawner : MonoBehaviour
     {
-        private enum SpawnStatus
-        {
-            ShowWaveCount,
-            CanSpawn,
-            Finished
-        }
-
-        private int numberOfSpawns;
-        public static int waveCount;
         private WaitForSeconds waitForSeconds;
+        private int maxAmountOfEnemiesPerWave;
+        private int currentAmountOfEnemiesThisWave;
 
-        [Header("Boss System")]
-        public bool canSpawnBoss;
+        [Header("Parameters")]
+        public int waveCount;
+        public Transform spawnPoint;
         public BossManager bossManager;
 
-        [Header("Components")]
-        public GameManager gameManager;
-        
-        [field: Header("Parameters")]
-        public Transform spawnPoint;
-        private SpawnStatus spawnStatus;
-        [field: SerializeField] public int spawnQuantity {get; protected set;}
-
         [Header("Spawn Controllers")]
-        public EnemyManagersController currentEnemyManagersController;
-        private EnemyManagersController previousEnemyManagersController;
+        [SerializeField] private EnemyController[] enemyControllers;
+        [ReadOnly] public EnemyController currentEnemyManagersController;
 
-        [SerializeField]
-        private EnemyManagerController_Data[] enemyManagersControllerData;
-
-        protected virtual void Awake()
+        private void Awake()
         {
-            waveCount = 1;
-            spawnQuantity = Random.Range(7,11);
-            spawnStatus = SpawnStatus.ShowWaveCount;
+            waitForSeconds = new WaitForSeconds(3.0f);
         }
 
         private void Start()
         {
-            waitForSeconds = new WaitForSeconds(3.0f);
+            GameplayController controller = GameManager.Instance.Controller;
 
-            for (int i = 0; i < enemyManagersControllerData.Length; i++)
+            controller.AddStateListener(HandleSpawnProcess);
+            if(currentEnemyManagersController == null)
             {
-                EnemyManagerController_Data controller_Data = Instantiate(enemyManagersControllerData[i]);
-
-                enemyManagersControllerData[i] = controller_Data;
-                enemyManagersControllerData[i].Initialize(gameManager);
+                controller.SwitchGameState(GamePlayState.SpawningEnemy);
             }
-        }
-
-        public virtual void EnemySpawn_Updater()
-        {
-            canSpawnBoss = CanSpawnBoss();
-
-            SpawnObject();
-            if (currentEnemyManagersController != null)
-            {
-                currentEnemyManagersController.EnemyManagerController_Updater();
-            }
-            
         }
 
         private bool CanSpawnBoss()
         {
-            if(waveCount == 30 || waveCount == 60 || waveCount == 100)
+            if(waveCount > 0 && waveCount % 10 == 0)
             {
                 return true;
             }
             return false;
         }
 
-        protected void SpawnObject()
+        private void HandleSpawnProcess(GamePlayState gamePlayState)
         {
-            if(gameManager.playerManager.isDead)
+            if (gamePlayState == GamePlayState.SpawningEnemy)
             {
-                return;
-            }
-
-            if(currentEnemyManagersController?.missionStatus == MissionStatus.Active)
-            {
-                return;
-            }
-
-            if(currentEnemyManagersController?.missionStatus == MissionStatus.Failed)
-            {
-                previousEnemyManagersController = currentEnemyManagersController;
-                if (previousEnemyManagersController != null && previousEnemyManagersController.gameObject.activeSelf == true)
-                {
-                    previousEnemyManagersController.ReleaseObject();
-                }
-
-                if (canSpawnBoss) // And Boss Not Dead
-                {
-                    if (bossManager.gameObject.activeSelf != true)
-                    {
-                        bossManager.gameObject.SetActive(true);
-                        bossManager.IncreaseAppearanceCount();
-                    }
-                }
-                currentEnemyManagersController = null;
-                spawnStatus = SpawnStatus.ShowWaveCount;
-            }
-
-            if(canSpawnBoss && bossManager.isDead != true)
-            {
-                return;
-            }
-
-            if(spawnStatus == SpawnStatus.ShowWaveCount)
-            {
-                gameManager.uIManager.PauseButton.interactable = false;
-                gameManager.uIManager.SetRoundCount(waveCount);
-                
-                if(waveCount > 1) 
-                {
-                    gameManager.playerManager.PlayReloadAnimation();
-                }
-                StartCoroutine(DisableRoundCountAndSpawn());
-            }
-
-            if(spawnStatus == SpawnStatus.CanSpawn)
-            {
-                Spawn();
+                StartCoroutine(SpawnProcess());
             }
         }
 
-        private IEnumerator DisableRoundCountAndSpawn()
+        private IEnumerator SpawnProcess()
         {
+            GameManager gameManager = GameManager.Instance;
+            UIManager uiManager = gameManager.uiManager;
+
+            bool canSpawnBoss = CanSpawnBoss();
+            if (canSpawnBoss != true && currentAmountOfEnemiesThisWave >= maxAmountOfEnemiesPerWave)
+            {
+                CreateNewWave(uiManager);
+            }
             yield return waitForSeconds;
-            spawnStatus = SpawnStatus.CanSpawn;
-            gameManager.uIManager.CenterRoundCountUI.gameObject.SetActive(false);
-            gameManager.uIManager.PauseButton.interactable = true;
+            uiManager.PauseButton.interactable = true;
+            uiManager.CenterTextUI.gameObject.SetActive(false);
+            SpawnEnemyControllerOrBoss(canSpawnBoss, gameManager);
         }
 
-        protected void Spawn()
+        private void SpawnEnemyControllerOrBoss(bool canSpawnBoss, GameManager gameManager)
         {
-            if(currentEnemyManagersController != null)
+            GameObject boss = bossManager.gameObject;
+            if (canSpawnBoss)
             {
-                return;
+                boss.SetActive(true);
+                bossManager.IncreaseAppearanceCount();
             }
-            
+            else
+            {
+                currentEnemyManagersController = CreateNewController();
+                currentEnemyManagersController.StartSpawningEnemy();
+            }
+            gameManager.Controller.SwitchGameState(GamePlayState.Active);
+        }
+
+        private void CreateNewWave(UIManager uiManager)
+        {
             waveCount++;
-            spawnStatus = SpawnStatus.Finished;
+            currentAmountOfEnemiesThisWave = 0;
+            maxAmountOfEnemiesPerWave = Random.Range(45, 65);
+            uiManager.SetRoundCount(waveCount);
+        }
 
-            int random = Random.Range(0, enemyManagersControllerData.Length);
-            EnemyManagerController_Data randomData = enemyManagersControllerData[random];
+        private EnemyController CreateNewController()
+        {
+            int random = Random.Range(0, enemyControllers.Length);
+            EnemyController newController = Instantiate(enemyControllers[random], spawnPoint);
+            newController.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
 
-            currentEnemyManagersController = randomData.enemyManagerControllerPool.Get();
-            currentEnemyManagersController.transform.parent = spawnPoint;
-            currentEnemyManagersController.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            
-            gameManager.playerManager.canShoot = true;
+            newController.Init(this);
+            GameManager.Instance.playerManager.canShoot = true;
+            currentAmountOfEnemiesThisWave += newController.MaxKillCount;
+            return newController;
         }
     }
 }

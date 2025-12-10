@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a6e88354b8859f42927e40dc9177a27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathControllerClassArray:
-  - wayPointName: Curve 01
-    pathControllers:
+  pathCreatorList: []
+  pathCreatorContainers:
+  - wayPointName: Curve 1
+    pathCreators:
     - {fileID: 1993392883863432601, guid: 0ba63c746f03e4d4e819b493dfc43df4, type: 3}
     - {fileID: 4297528510494039844, guid: df88e7a6e6dc71444a039b0491580032, type: 3}
-  pathCreatorList: []

@@ -45,7 +45,7 @@ namespace Onion_AI
 
         protected override void HandleMovement(float delta)
         {
-            float speed = acceleration * movementSpeed * delta;
+            float speed = movementSpeed * delta;
             transform.position = Vector3.MoveTowards(transform.position, moveDirection, speed);
 
             distanceToTarget = Vector3.Distance(transform.position, moveDirection);

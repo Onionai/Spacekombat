@@ -57,10 +57,11 @@ namespace Onion_AI
 
         protected virtual void Fire(Transform firePoint)
         {
-            WeaponManager fireObject = characterManager.gameManager.levelSpawners.RandomBulletShooter();
+            GameManager gameManager = GameManager.Instance;
+            WeaponManager fireObject = gameManager.Level.RandomBulletShooter();
             
             fireObject.Initialize(firePoint, this);
-            fireObject.levelSpawner = characterManager.gameManager.levelSpawners;
+            fireObject.levelSpawner = gameManager.Level;
         }
     }
 }

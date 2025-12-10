@@ -4,39 +4,42 @@ namespace Onion_AI
 {
     public class PlayerManager : CharacterManager
     {
-        //Onion_AI Components
-        public PlayerInput playerInput {get; private set;}
-        public PlayerCombat playerCombat {get; private set;}
-        public PlayerMovement playerMovement {get; private set;}
-        public PlayerStatistic playerStatistic {get; private set;}
+        public bool HasShield { get; private set; }
+        public bool HasMagnet { get; private set; }
 
-        //status
+        //Onion_AI Components
+        public PlayerInput Input {get; private set;}
+        public PlayerCombat Combat {get; private set;}
+        public PlayerMovement Movement {get; private set;}
+        public PlayerStatistic Statistics {get; private set;}
+
+        [Header("Status")]
         public int coinCount;
         public int killCount;
-        public float coinMultiplier;
 
-        [Header("Power Up")]
+        [Header("Power Up Parameters")]
         public float expirationTime;
         public PowerUpClass currentPowerUp;
+        [SerializeField] private GameObject shieldObject;
 
         protected override void Awake()
         {
             base.Awake();
 
             canShoot = false;
-            playerInput = GetComponent<PlayerInput>();
-            gameManager = FindObjectOfType<GameManager>();
+            Input = GetComponent<PlayerInput>();
 
-            playerCombat = characterCombat as PlayerCombat;
-            playerMovement = characterMovement as PlayerMovement;
-            playerStatistic = characterStatistics as PlayerStatistic;
+            Combat = characterCombat as PlayerCombat;
+            Movement = characterMovement as PlayerMovement;
+            Statistics = characterStatistics as PlayerStatistic;
         }
 
         protected override void Start()
         {
             base.Start();
 
-            healthBarUI = gameManager.uIManager.PlayerHealthBar;
+            shieldObject.SetActive(HasShield);
+            healthBarUI = GameManager.Instance.uiManager.PlayerHealthBar;
             characterAnimationManager.PlayTargetAnimation(characterAnimationManager.spawnHash, true);
         }
 
@@ -45,16 +48,26 @@ namespace Onion_AI
             characterAnimationManager.PlayTargetAnimation(characterAnimationManager.reloadHash, true);
         }
 
+        public void HandleCoinMagnetism(bool status)
+        {
+            HasMagnet = status;
+        }
+
+        public void HandleShieldVisibility(bool status)
+        {
+            HasShield = status;
+            shieldObject.SetActive(status);
+        }
+
         private void HandlePowerUpCounter(float delta)
         {
-            if(currentPowerUp == null || currentPowerUp.powerUpType == PowerUpType.Health)
+            if(currentPowerUp == null || currentPowerUp.PowerUpType == PowerUpType.Health)
             {
                 return;
             }
 
             if(expirationTime <= 0.0f)
             {
-                expirationTime = 0.0f;
                 currentPowerUp.EndPowerUp(this);
                 return;
             }
@@ -63,27 +76,27 @@ namespace Onion_AI
 
         protected override void Update()
         {
-            if(GameManager.gameState != GameState.Active)
+            if (GameManager.Instance.CompareGameStatus(GamePlayState.Active) != true)
             {
                 return;
             }
-            
-            playerMovement.ClampPlayerPosition();
+
+            Movement.ClampPlayerPosition();
 
             if(isDead)
             {
                 return;
             }
 
-            playerInput.PlayerInput_Update();
+            Input.PlayerInput_Update();
             performingAction = animator.GetBool(characterAnimationManager.performActionHash);
 
             base.Update();
             HandlePowerUpCounter(Time.deltaTime);
-            gameManager.uIManager.DisplayCoinCount(coinCount);
+            GameManager.Instance.uiManager.DisplayCoinCount(coinCount);
         }
 
-        public void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D other)
         {
             if(isDead)
             {
@@ -104,7 +117,11 @@ namespace Onion_AI
             EnemyManager characterCausingDamage = other.GetComponentInParent<EnemyManager>();
             if(characterCausingDamage != null)
             {
-                characterStatistics.HandleDeath();
+                if (HasShield != true)
+                {
+                    characterStatistics.HandleDeath();
+                }
+                characterCausingDamage.characterStatistics.HandleDeath();
             }
         }
     }

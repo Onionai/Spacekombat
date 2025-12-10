@@ -48,16 +48,16 @@ namespace Onion_AI
             characterManager.isDead = true;
 
             InstantiateCoin();
-            bossManager.gameManager.audioManager.PlaySound(111);
+            GameManager gameManager = GameManager.Instance;
+            gameManager.Audio.PlaySound(111);
 
             if (bossManager.appearanceCount >= 3)
             {
-                LevelSpawners.RandomParticleEffect(transform.position, Quaternion.identity, bossManager.gameManager.levelSpawners.explosionFXArray);
+                LevelSpawners.RandomParticleEffect(transform.position, Quaternion.identity, gameManager.Level.explosionFXArray);
                 characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.deathHash, true);
                 Destroy(bossManager.gameObject, 5f);
                 return;
             }
-
             runAway = true;
             characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.deathHash, true);
             Invoke(nameof(DeactivateObject), 3.5f);
@@ -91,12 +91,14 @@ namespace Onion_AI
 
         private void InstantiateCoin()
         {
-            GoldCoin goldCoin = bossManager.gameManager.levelSpawners.goldObjectPool.Get();
-            int coinCount = bossManager.appearanceCount * 1000;
+            LevelSpawners levelSpawners = GameManager.Instance.Level;
 
-            goldCoin.SetCoinCount(coinCount);
+            GoldCoin goldCoin = levelSpawners.goldObjectPool.Get();
+            int coinCount = bossManager.appearanceCount * 100;
+
+            goldCoin.CreateCoin(coinCount, GameManager.Instance.playerManager);
             goldCoin.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-            goldCoin.levelSpawner = bossManager.gameManager.levelSpawners;
+            goldCoin.levelSpawner = levelSpawners;
         }
 
         private IEnumerator DisplayHealthBarCoroutine()

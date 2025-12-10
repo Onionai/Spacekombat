@@ -27,19 +27,9 @@ namespace Onion_AI
         Player
     }
 
-    public enum GameState
-    {
-        Active,
-        Paused,
-        Resume,
-        Failed
-    }
+    public enum FormationType { Box, Circle }
 
-    public enum FormationType
-    {
-        Box,
-        Circle
-    }
+    public enum GamePlayState { Active, PlayerPause, PlayerResume, PlayerDead, MissionComplete, SpawningEnemy }
 
     public enum BossFiringType
     {
@@ -50,15 +40,8 @@ namespace Onion_AI
 
     public enum EnemyType
     {
-        Static,
-        Linear,
-        FreeRoam
-    }
-    
-    public enum MissionStatus
-    {
-        Active,
-        Failed,
-        Completed
+        FreeFall,
+        FreeRoam,
+        Formation
     }
 }

@@ -24,18 +24,26 @@ namespace Onion_AI
         [Header("Status")]
         public FormationType formationType = FormationType.Box;
 
-        public void Initialize(int depth, int width)
+        public void Initialize(bool divisibleBySix, int elementSize)
         {
-            _formationWidth = (formationType == FormationType.Box) ? 6 : width;
-            _formationDepth = (formationType == FormationType.Box) ? depth / 6 : depth;
-
+            FormationType f = (Random.Range(0, 7) > 3 && divisibleBySix) ? FormationType.Box : FormationType.Circle;
+            if(f == FormationType.Box)
+            {
+                _formationWidth = 6;
+                _formationDepth = elementSize / 6;
+            }
+            else
+            {
+                _formationWidth = elementSize;
+                _formationDepth = Random.Range(1,3);
+            }
+            formationType = f;
             RandomizeParameters();
         }
 
         private void RandomizeParameters()
         {
             _noise = Random.Range(0f, 0.35f);
-
             if(formationType == FormationType.Box)
             {
                 _spread = Random.Range(0.75f, 0.8f);
@@ -76,7 +84,6 @@ namespace Onion_AI
                     return 0;
                 }
             }
-
             float pingTime = Time.time * time;
             return Mathf.PingPong(pingTime, 1f);
         }
@@ -84,30 +91,20 @@ namespace Onion_AI
         private IEnumerable<Vector3> BoxEvaluation()
         {
             var middleOffset = new Vector3(_formationWidth * 0.5f, _formationDepth * 0.5f, 0);
-
             for (var x = 0; x < _formationWidth; x++)
             {
                 for (var y = 0; y < _formationDepth; y++)
                 {
-                    // Determine half-row index and its default direction
                     var rowHalfIndex = y / 2;
                     float direction = (rowHalfIndex % 2 == 0) ? 1 : -1; // Even rows go right, odd rows go left
-
-                    // Introduce random variation: occasionally flip the direction
                     if (Random.value > 0.7f)  // 30% chance to flip direction
                     {
                         direction *= -1;  // Flip the direction
                     }
-
-                    // Get the nthOffset for this row, but only update it once per full pass
                     var pos = new Vector3(x + (y % 2 == 0 ? 0 : _nthOffset * direction), y, 0);
-
                     pos -= middleOffset;
-
                     pos += GetNoise(pos);
-
                     pos *= _spread;
-
                     yield return pos;
                 }
             }

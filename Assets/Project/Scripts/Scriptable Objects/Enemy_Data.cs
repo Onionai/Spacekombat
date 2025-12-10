@@ -5,53 +5,45 @@ using System.Collections;
 namespace Onion_AI
 {
     [CreateAssetMenu(fileName = "Enemy_Data", menuName = "OnionAI/SpawnItems/EnemyData")]
-    public class Enemy_Data : Spawnable_Items, IObjectSpawner
+    public class Enemy_Data : ScriptableObject
     {
-        [field: Header("Enemy Information")]
         private bool hasResetPosition;
-        public string spawnName {get; private set;}
-        [SerializeField] private EnemyManager[] enemyManagers;
-        public ObjectPool<EnemyManager> enemyPool {get; private set;}
+        private EnemyController enemyController;
 
-        public override void Initialize()
+        [Header("Enemy Information")]
+        [SerializeField] private EnemyManager enemy;
+        public ObjectPool<EnemyManager> EnemyPool {get; private set;}
+
+        public void Initialize(EnemyController emc)
         {
-            base.Initialize();
-
-            EnemyManager randomObject = RandomObject();
-            enemyPool = ObjectSpawner.PoolEnemyManager(randomObject);
+            enemyController = emc;
+            EnemyPool = ObjectSpawner.PoolEnemyManager(enemy);
         }
 
-        public void IObjectSpawner_SpawnObject(SpawnPoint spawnPoint)
+        public EnemyManager SpawnObject(Transform spawnPoint)
         {
-            if(enemyPool == null)
-            {
-                return;
-            }
-
             hasResetPosition = true;
-            EnemyManager enemyManager = enemyPool.Get();
-            enemyManager.transform.SetParent(spawnPoint.transform);
-            enemyManager.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            
-            enemyManager.Initialize(this, enemyManagersController, spawnPoint);
-            enemyManagersController.StartCoroutine(SetEnemyManagerProperties(enemyManager));
+            EnemyManager enemyManager = EnemyPool.Get();
+
+            Transform transform = enemyManager.transform;
+            transform.SetParent(spawnPoint.transform);
+            transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            enemyController.StartCoroutine(SetEnemyManagerProperties(enemyManager));
+            return enemyManager;
         }
 
         private IEnumerator SetEnemyManagerProperties(EnemyManager enemyManager)
         {
-            yield return new WaitUntil(() => hasResetPosition);
+            yield return new WaitUntil(HasResetPosition);
+
             hasResetPosition = false;
             enemyManager.gameObject.SetActive(true);
-            
-            enemyManagersController.numberOfSpawns++;
-            enemyManagersController.StopCoroutine(SetEnemyManagerProperties(enemyManager));
+            //enemyController.StopCoroutine(SetEnemyManagerProperties(enemyManager));
         }
 
-        private EnemyManager RandomObject()
+        private bool HasResetPosition()
         {
-            int selectedOption = Random.Range(0,enemyManagers.Length);
-            EnemyManager selectedObject = enemyManagers[selectedOption];
-            return selectedObject;
+            return hasResetPosition;
         }
     }
 }

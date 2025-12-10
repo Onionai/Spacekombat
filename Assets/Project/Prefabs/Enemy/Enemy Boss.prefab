@@ -474,9 +474,7 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0}
   <mainCamera>k__BackingField: {fileID: 0}
   <cameraObject>k__BackingField: {fileID: 0}
-  <acceleration>k__BackingField: 1
-  <movementSpeed>k__BackingField: 0.75
-  <rotationSpeed>k__BackingField: 20
+  <movementSpeed>k__BackingField: 3
   <topPadding>k__BackingField: 1
   <leftPadding>k__BackingField: -1.1
   <rightPadding>k__BackingField: 1.1
@@ -710,8 +708,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 2
-  <damageModifier>k__BackingField: 2.5
   <firePoints>k__BackingField: []
+  currentDamageModifier: 0
+  <damageModifier>k__BackingField: 2.5
   shootTimer: 20
   delayTimer: 10
   boss_FiringState:

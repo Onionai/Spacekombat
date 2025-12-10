@@ -1,37 +1,22 @@
-using PathCreation;
 using UnityEngine;
+using PathCreation;
 
 namespace Onion_AI
 {
     public class EnemyMovement : CharacterMovement
     {
-        private float speed;
-        private PathCreator pathCreator;
         private EnemyManager enemyManager;
 
-        //EnemyManagers Controller
-        EnemyManagersController enemyManagersController;
-        EnemyManagersController_Fixed enemyManagersController_Fixed;
+        private float disRemaining;
 
-        private float pathLength;
-        private float distanceRemaining;
+        [Header("Enemy Behavioral Movement")]
+        [ReadOnly] public int index;
+        [ReadOnly] public bool constrainMovement;
 
         protected override void Awake()
         {
             base.Awake();
             enemyManager = characterManager as EnemyManager;
-        }
-
-        public void Initialize()
-        {
-            SpawnPoint spawnPoint = enemyManager.spawnPoint;
-            pathCreator = spawnPoint.pathCreator;
-            enemyManagersController = enemyManager.enemyManagersController;
-
-            if(enemyManager.enemyType == EnemyType.Linear)
-            {
-                enemyManagersController_Fixed = enemyManagersController as EnemyManagersController_Fixed;
-            }
         }
 
         protected override void Start()
@@ -41,11 +26,6 @@ namespace Onion_AI
 
         public override void CharacterMovement_FixedUpdate(float delta)
         {
-            if(enemyManager.attemptSuicide)
-            {
-                return;
-            }
-            
             HandleMovement(delta);
             base.CharacterMovement_FixedUpdate(delta);
         }
@@ -54,61 +34,45 @@ namespace Onion_AI
         
         protected override void HandleMovement(float delta)
         {
-            float waveSpeedMultiplier = (EnemySpawner.waveCount - 1) / 10f;
-            speed = acceleration * movementSpeed * delta * waveSpeedMultiplier;
-
-            if(enemyManager.enemyType == EnemyType.Linear)
+            if (enemyManager.hasReachedTarget)
             {
-                HandleLinearMovement();
-            }
-            else if(enemyManager.enemyType == EnemyType.Static)
-            {
-                HandleStaticMovement();
-            }
-            else if(enemyManager.enemyType == EnemyType.FreeRoam)
-            {
-                HandleFreeRoamEnemyMovement();
-            }
-        }
-
-        private void HandleLinearMovement()
-        {
-            distanceRemaining += speed;
-            pathLength = pathCreator.path.length;
-
-            if(distanceRemaining >= pathLength)
-            {
-                int index = enemyManagersController.spawnedEnemies.IndexOf(enemyManager);
-
-                Vector3 spawnHolderPosition = enemyManagersController_Fixed.SpawnHolderPosition();
-                Vector3 targetPosition = spawnHolderPosition + enemyManagersController_Fixed.formationPoints[index];
-
-                float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
-                enemyManager.hasReachedFormation = distanceToTarget <= 0.25f;
-
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed);
                 return;
             }
-            transform.position = pathCreator.path.GetPointAtDistance(distanceRemaining, EndOfPathInstruction.Stop);
-        }
-
-        private void HandleStaticMovement()
-        {
+            float waveSpeedMultiplier = (GameManager.Instance.EnemySpawn.waveCount) + 1 / 100;
+            float speed = movementSpeed * delta * waveSpeedMultiplier;
+            if(enemyManager.enemyType.Equals(EnemyType.FreeFall) != true)
+            {
+                HandleNonFreeFallMovement(speed);                
+                return;
+            }
             enemyManager.transform.position += Vector3.down * speed;
         }
 
-        private void HandleFreeRoamEnemyMovement()
+        private void HandleNonFreeFallMovement(float speed)
         {
-            enemyManager.canShoot = true;
-            pathCreator = enemyManager.pathCreator;
-            
-            distanceRemaining += speed;
-            transform.position = pathCreator.path.GetPointAtDistance(distanceRemaining, EndOfPathInstruction.Stop);
-        }
+            disRemaining += speed;
+            VertexPath path = enemyManager.PathCreatorClass.path;
 
+            float pathLength = path.length;
+            if(enemyManager.enemyType.Equals(EnemyType.Formation) && disRemaining >= pathLength)
+            {
+                EnemyController_FormationBased formation = enemyManager.Controller as EnemyController_FormationBased;
+
+                index = formation.spawnedEnemies.IndexOf(enemyManager);
+                Vector3 spawnHolderPosition = formation.SpawnHolderPosition();
+
+                Vector3 targetPosition = spawnHolderPosition + formation.FormationPoints[index];
+                float distanceToTarget = Vector3.Distance(transform.position, targetPosition);
+                enemyManager.hasReachedTarget = distanceToTarget <= 0.25f;
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed);
+                return;
+            }
+            transform.position = path.GetPointAtDistance(disRemaining, EndOfPathInstruction.Stop);
+        }
+        
         public void ResetDistanceRemaining()
         {
-            distanceRemaining = 0.0f;
+            disRemaining = 0.0f;
         }
     }
 }

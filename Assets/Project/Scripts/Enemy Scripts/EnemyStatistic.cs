@@ -40,21 +40,28 @@ namespace Onion_AI
             base.ResetHealth();
         }
 
+        public override void HandleDeath()
+        {
+            base.HandleDeath();
+            showHealthBar = false;
+            GameManager gameManager = GameManager.Instance;
+
+            InstantiateCoin();
+            //gameManager.totalScore += 50;
+            gameManager.Audio.PlaySound(111);
+
+            Vector3 position = transform.position;
+            enemyManager.Controller.KilledEnemy(position);
+            LevelSpawners.RandomParticleEffect(position, Quaternion.identity, gameManager.Level.explosionFXArray);
+
+            enemyManager.ReleaseFromPool();
+        }
+
         public override void TakeDamage(float damageValue)
         {
             if(currentHealth <= 0.0f)
             {
-                currentHealth = 0.0f;
-                showHealthBar = false;
-                characterManager.isDead = true;
-
-                InstantiateCoin();
-                
-                enemyManager.enemyManagersController.KilledEnemy();
-                enemyManager.gameManager.audioManager.PlaySound(111);
-                LevelSpawners.RandomParticleEffect(transform.position, Quaternion.identity, enemyManager.gameManager.levelSpawners.explosionFXArray);
-
-                enemyManager.ReleaseFromPool();
+                HandleDeath();
                 return;
             }
             showHealthBar = true;
@@ -64,11 +71,12 @@ namespace Onion_AI
 
         private void InstantiateCoin()
         {
-            GoldCoin goldCoin = enemyManager.gameManager.levelSpawners.goldObjectPool.Get();
+            LevelSpawners levelSpawners = GameManager.Instance.Level;
+            GoldCoin goldCoin = levelSpawners.goldObjectPool.Get();
 
-            goldCoin.SetCoinCount(30);
+            goldCoin.CreateCoin(10, GameManager.Instance.playerManager);
             goldCoin.transform.SetPositionAndRotation(transform.position, Quaternion.identity);
-            goldCoin.levelSpawner = enemyManager.gameManager.levelSpawners;
+            goldCoin.levelSpawner = levelSpawners;
         }
 
         private IEnumerator DisplayHealthBarCoroutine()

@@ -101,7 +101,7 @@ MonoBehaviour:
   speed: 3
   expirationTime: 10
   valueMultiplier: 2
-  <powerUpType>k__BackingField: 2
+  <PowerUpType>k__BackingField: 2
   shieldObject: {fileID: 1311016140309472670, guid: 95617dd1c3e4d3e47b7808648fbd7556, type: 3}
 --- !u!58 &8241128064660825344
 CircleCollider2D:

@@ -7,8 +7,8 @@ namespace Onion_AI
     public class PathController : MonoBehaviour
     {
         [Header("Controller Information")]
-        [SerializeField] private PathControllerClass[] pathControllerClassArray;
-        [SerializeField] private List<PathCreator> pathCreatorList = new List<PathCreator>();
+        [SerializeField] private List<PathCreator> pathCreatorList = new();
+        [SerializeField] private PathCreatorContainer[] pathCreatorContainers;
 
         public PathCreator RandomPathCreator_FreeRoam()
         {
@@ -16,10 +16,10 @@ namespace Onion_AI
             return pathCreatorList[random];
         }
 
-        public PathControllerClass RandomPathCreator_Fixed()
+        public PathCreatorContainer RandomPathCreatorClass()
         {
-            int random = Random.Range(0, pathCreatorList.Count);
-            return pathControllerClassArray[random];
+            int random = Random.Range(0, pathCreatorContainers.Length);
+            return pathCreatorContainers[random];
         }
     }
 }

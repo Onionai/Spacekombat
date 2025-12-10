@@ -63,7 +63,7 @@ namespace Onion_AI
             WeaponManager fireObject = playerBulletData.bulletPool.Get();
 
             fireObject.SetWeaponData(playerBulletData);
-            fireObject.levelSpawner = characterManager.gameManager.levelSpawners;
+            fireObject.levelSpawner = GameManager.Instance.Level;
 
             fireObject.Initialize(firePoint, this);
         }

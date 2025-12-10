@@ -1,7 +1,5 @@
 using UnityEngine;
 using PathCreation;
-using UnityEngine.UI;
-using System.Collections.Generic;
 
 namespace Onion_AI
 {
@@ -14,9 +12,14 @@ namespace Onion_AI
     }
 
     [System.Serializable]
-    public class PathControllerClass
+    public class PathCreatorContainer
     {
         public string wayPointName;
-        public PathCreator[] pathControllers;
+        public PathCreator[] pathCreators;
+    }
+
+    public class ReadOnlyAttribute : PropertyAttribute
+    {
+
     }
 }

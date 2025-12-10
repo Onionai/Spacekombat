@@ -54,19 +54,10 @@ public class RemoteAssetLoader : MonoBehaviour
     private void OnAssetLoaded(GameObject loadedAsset)
     {
         Instantiate(loadedAsset);
-        Debug.Log("Remote asset successfully instantiated.");
     }
 
     private void OnAllAssetsLoaded(AsyncOperationHandle<IList<GameObject>> handle)
     {
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            Debug.Log("All assets with the specified label loaded.");
-        }
-        else
-        {
-            Debug.LogError("Failed to load assets by label.");
-        }
         loadingScreen.SetActive(false);
     }
 
@@ -75,7 +66,6 @@ public class RemoteAssetLoader : MonoBehaviour
         if (assetHandle.IsValid())
         {
             Addressables.Release(assetHandle);
-            Debug.Log("Remote assets released from memory.");
         }
     }
 }

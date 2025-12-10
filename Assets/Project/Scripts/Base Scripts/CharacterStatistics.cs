@@ -31,14 +31,19 @@ namespace Onion_AI
         {
             characterManager.isDead = false;
             currentHealth = healthLevel * 10.0f;
-
-            characterManager.healthBarUI?.SetMaxValue(currentHealth);
-            characterManager.healthBarUI?.SetCurrentValue(currentHealth);
+            
+            UIBar healthBarUI = characterManager.healthBarUI;
+            if (healthBarUI != null)
+            {
+                healthBarUI.SetMaxValue(currentHealth);
+                healthBarUI.SetCurrentValue(currentHealth);
+            }
         }
 
         public virtual void HandleDeath()
         {
-            
+            currentHealth = 0.0f;
+            characterManager.isDead = true;
         }
 
         public virtual void TakeDamage(float damageValue)

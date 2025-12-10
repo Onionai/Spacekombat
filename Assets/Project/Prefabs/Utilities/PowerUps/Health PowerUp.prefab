@@ -101,7 +101,7 @@ MonoBehaviour:
   speed: 3
   expirationTime: 10
   valueMultiplier: 20
-  <powerUpType>k__BackingField: 1
+  <PowerUpType>k__BackingField: 1
 --- !u!58 &4214583482567315805
 CircleCollider2D:
   m_ObjectHideFlags: 0

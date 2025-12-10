@@ -5,6 +5,7 @@ namespace Onion_AI
     public class WeaponManager : MonoBehaviour, IReleaseFromPool
     {
         //Manager
+        private bool isPlayer;
         private WeaponData weaponData;
         [HideInInspector] public CharacterManager characterManager;
 
@@ -33,15 +34,23 @@ namespace Onion_AI
         public void Initialize(Transform spawnPoint, CharacterCombat characterCombat)
         {
             characterManager = characterCombat.characterManager;
+
+            isPlayer = characterManager is PlayerManager;
             characterDamageCollider.characterCausingDamage = characterManager;
 
             transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);
-            rigidBody.AddForce(spawnPoint.up * projectileSpeed * EnvironmentManager.gameSpeedMultiplier, ForceMode2D.Impulse);
+            rigidBody.AddForce(EnvironmentManager.gameSpeedMultiplier * projectileSpeed * spawnPoint.up, ForceMode2D.Impulse);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.CompareTag("Bullet") || other.CompareTag("Shield"))
+            if (other.CompareTag("Bullet"))
+            {
+                ReleaseFromPool();
+                return;
+            }
+
+            if (!isPlayer && other.CompareTag("Shield"))
             {
                 ReleaseFromPool();
                 return;

@@ -46,10 +46,7 @@ namespace Onion_AI
         public override void HandleDeath()
         {
             base.HandleDeath();
-            currentHealth = 0.0f;
-            characterManager.isDead = true;
-            
-            HealthCounterManager.Instance.ReduceHealthCounter();
+            TriesCounterManager.Instance?.LoseTry();
             characterManager.characterAnimationManager.PlayTargetAnimation(characterManager.characterAnimationManager.deathHash, true);
 
             StartCoroutine(DisplayExitMenu());
@@ -58,7 +55,7 @@ namespace Onion_AI
         private IEnumerator DisplayExitMenu()
         {
             yield return delayBeforeDisplayingExitPanel;
-            characterManager.gameManager.uIManager.DisplayExitMenu(true);
+            GameManager.Instance.uiManager.DisplayExitMenu(true);
         }
 
         public void IncreaseCurrentHealth(float health)

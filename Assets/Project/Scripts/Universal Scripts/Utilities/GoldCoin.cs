@@ -5,15 +5,17 @@ namespace Onion_AI
     public class GoldCoin : MonoBehaviour, IReleaseFromPool
     {
         public LevelSpawners levelSpawner;
+        private PlayerManager playerManager;
 
         [field: Header("Coin Stats")]
         [SerializeField] private int coinCount;
         [SerializeField] private float acceleration = 10;
         [SerializeField] private float movementSpeed = 100;
 
-        public void SetCoinCount(int count)
+        public void CreateCoin(int count, PlayerManager player)
         {
             coinCount = count;
+            playerManager = player;
         }
 
         private void FixedUpdate()
@@ -25,7 +27,16 @@ namespace Onion_AI
         private void HandleMovement(float delta)
         {
             float speed = acceleration * movementSpeed * delta;
-            transform.position = Vector3.MoveTowards(transform.position, GameManager.playerTransform.position, speed);
+
+            if (playerManager != null)
+            {
+                if (playerManager.HasMagnet)
+                {
+                    transform.position = Vector3.MoveTowards(transform.position, playerManager.transform.position, speed);
+                    return;
+                }
+            }
+            transform.position += Vector3.down * speed;
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -34,10 +45,10 @@ namespace Onion_AI
             {
                 return;
             }
-            PlayerManager playerManager = other.GetComponentInParent<PlayerManager>();
+
             if (playerManager != null)
             {
-                playerManager.coinCount += Mathf.CeilToInt(playerManager.coinMultiplier * coinCount);
+                playerManager.coinCount++;
                 ReleaseFromPool();
             }
         }

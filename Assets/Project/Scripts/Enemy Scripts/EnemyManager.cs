@@ -12,30 +12,21 @@ namespace Onion_AI
 
         [field: Header("Parameters")]
         public Enemy_Data enemyData {get; private set;}
-        public SpawnPoint spawnPoint {get; private set;}
-        public PathCreator pathCreator {get; private set;}
-        [field: SerializeField] public EnemyManagersController enemyManagersController {get; private set;}
+        [field: SerializeField] public EnemyController Controller {get; private set;}
 
         [field: Header("Status")]
         public bool attemptSuicide;
-        public bool hasReachedFormation;
+        public bool hasReachedTarget;
+        public PathCreator PathCreatorClass { get; private set; }
         [field: SerializeField] public EnemyType enemyType {get; private set;}
 
-        public void Initialize(Enemy_Data ED, EnemyManagersController EMC, SpawnPoint SP)
+        public void Initialize(Enemy_Data ED, EnemyController EMC, PathCreator PC)
         {
             enemyData = ED;
-            spawnPoint = SP;
-            enemyManagersController = EMC;
-
-            spawnPoint.spawnedEnemies.Add(this);
-            enemyManagersController.spawnedEnemies.Add(this);
-            enemyType = enemyManagersController.enemyType;
-
-            gameManager = enemyManagersController.gameManager;
-            if(enemyType == EnemyType.FreeRoam) {pathCreator = enemyManagersController.pathController.RandomPathCreator_FreeRoam();}
-
-            enemyMovement.Initialize();
-            if(isDead) {characterStatistics.ResetHealth();}
+            Controller = EMC;
+            PathCreatorClass = PC;
+            characterStatistics.ResetHealth();
+            enemyType = Controller.TypeOfEnemy;
         }
 
         protected override void Awake()
@@ -54,7 +45,7 @@ namespace Onion_AI
 
         protected override void Update()
         {
-            if(GameManager.gameState != GameState.Active)
+            if(GameManager.Instance.CompareGameStatus(GamePlayState.Active) != true)
             {
                 return;
             }
@@ -64,7 +55,11 @@ namespace Onion_AI
         public void ReleaseFromPool()
         {
             enemyMovement.ResetDistanceRemaining();
-            enemyData.enemyPool.Release(this);
+            if(Controller.spawnedEnemies.Contains(this))
+            {
+                Controller.spawnedEnemies.Remove(this);
+            }
+            enemyData.EnemyPool.Release(this);
         }
     }
 }

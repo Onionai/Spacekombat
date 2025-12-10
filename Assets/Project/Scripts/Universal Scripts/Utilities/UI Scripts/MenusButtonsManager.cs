@@ -52,9 +52,8 @@ namespace Onion_AI
         public void PlayGame()
         {
             //Change Load Scene to Load Scene Based On Level Selected
-            if(HealthCounterManager.Instance.currentLifeCount <= 0)
+            if(TriesCounterManager.Instance.CurrentTriesNumber <= 0)
             {
-                HealthCounterManager.Instance.currentLifeCount = 0;
                 return;
             }
             SceneManager.LoadScene("Game Scene", LoadSceneMode.Single);

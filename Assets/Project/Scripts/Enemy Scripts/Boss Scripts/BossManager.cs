@@ -13,9 +13,7 @@ namespace Onion_AI
         protected override void Awake()
         {
             base.Awake();
-            
             bossStats = characterStatistics as BossStats;
-            gameManager = FindObjectOfType<GameManager>();
         }
 
         protected override void Start()
@@ -37,7 +35,7 @@ namespace Onion_AI
 
         protected override void Update()
         {
-            if(GameManager.gameState != GameState.Active)
+            if (GameManager.Instance.CompareGameStatus(GamePlayState.Active) != true)
             {
                 return;
             }

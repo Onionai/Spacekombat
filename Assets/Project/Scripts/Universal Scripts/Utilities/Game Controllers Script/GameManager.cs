@@ -4,67 +4,63 @@ namespace Onion_AI
 {
     public class GameManager : MonoBehaviour
     {
-        public static int totalScore;
+        public static GameManager Instance { get; private set; }
 
-        public AudioManager audioManager {get; private set;}
-        public Boundaries[] boundaries {get; private set;}
-        public EnemySpawner enemySpawner {get; private set;}
-        public LevelSpawners levelSpawners {get; private set;}
-        public EnvironmentManager environmentManager {get; private set;}
+        public AudioManager Audio {get; private set;}
+        public LevelSpawners Level { get; private set; }
+        public EnemySpawner EnemySpawn {get; private set;}
+        public EnvironmentManager Enviroment {get; private set;}
 
         [field: Header("Camera Parameters")]
         public Vector2 maxCameraBounds {get; private set;}
         public Vector2 minCameraBounds {get; private set;}
 
-        [field: Header("Public Components")]
-        public UIManager uIManager;
+        [Header("Public Components")]
+        public UIManager uiManager;
         private LoadPlayer loadPlayer;
         public PlayerManager playerManager;
-        public static Transform playerTransform;
-        [SerializeField] private HealthCounterPanel healthCounterPanel;
 
-        [field: Header("Game Rules")]
+        [Header("Game Rules")]
         public int targetsNeededToKill;
-        public float scoreTimeMultiplier;
         public PowerUpClass[] powerUpClassArray;
-        [SerializeField] private Transform spawnPointPU;
+        [SerializeField] private GameplayController gamePlayController;
 
         [Header("Status")]
         public bool hasBeenSet;
-        public static GameState gameState = GameState.Active;
-        [field: SerializeField] public bool missionAccomplished {get; private set;}
+
+        public bool PlayerIsDead => playerManager.isDead;
+        public GameplayController Controller => gamePlayController;
 
         private void Awake()
         {
-            uIManager = FindObjectOfType<UIManager>();
-            levelSpawners = GetComponent<LevelSpawners>();
+            if(Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
 
+            Instance = this;
+            gamePlayController = new();
+            Level = GetComponent<LevelSpawners>();
+            uiManager = FindObjectOfType<UIManager>();
+
+            Audio = FindObjectOfType<AudioManager>();
             loadPlayer = FindObjectOfType<LoadPlayer>();
-            audioManager = FindObjectOfType<AudioManager>();
 
             loadPlayer.LoadSelectedJet();
             playerManager = FindObjectOfType<PlayerManager>();
             
-            playerTransform = playerManager.transform;
-            boundaries = GetComponentsInChildren<Boundaries>();
-            
-            enemySpawner = FindObjectOfType<EnemySpawner>();
-            environmentManager = FindObjectOfType<EnvironmentManager>();
-
-            uIManager.gameManager = this;
-            enemySpawner.gameManager = this;
-            HealthCounterManager.Instance?.SetHealthCounterPanel(healthCounterPanel);
+            EnemySpawn = FindObjectOfType<EnemySpawner>();
+            Enviroment = FindObjectOfType<EnvironmentManager>();
         }
         
         // Start is called before the first frame update
         void Start()
         {
-            InitializeBoundaries();
-            levelSpawners.Initialize();
+            Level.Initialize();
 
-            audioManager.PlaySound(101);
+            Audio.PlaySound(101);
             Camera mainCamera = Camera.main;
-            targetsNeededToKill = enemySpawner.spawnQuantity;
             minCameraBounds = mainCamera.ViewportToWorldPoint(new Vector2(0,0));
             maxCameraBounds = mainCamera.ViewportToWorldPoint(new Vector2(1,1));
         }
@@ -73,64 +69,35 @@ namespace Onion_AI
         void Update()
         {
             PlayGamePlaySound();
-            if(gameState == GameState.Paused)
-            {
-                return;
-            }
-
-            if(gameState == GameState.Resume)
-            {
-                uIManager.HandlePauseCountdown();
-                return;
-            }
-            
-            UpdateTargetsToKill();
-            if(missionAccomplished)
+            if(CompareGameStatus(GamePlayState.PlayerPause) || CompareGameStatus(GamePlayState.PlayerResume))
             {
                 return;
             }
             float delta = Time.deltaTime;
-
-            CalculateTotalScore(delta);
-            enemySpawner.EnemySpawn_Updater();
-            environmentManager.EnvironmentManager_Updater(delta);
+            Enviroment.EnvironmentManager_Updater(delta);
         }
 
-        public void SpawnPoweerUp()
+        public void SpawnPowerUp(Vector3 spawnPosition)
         {
             int random = Random.Range(0, powerUpClassArray.Length);
-            PowerUpClass powerUpClass = Instantiate(powerUpClassArray[random], spawnPointPU);
+            Instantiate(powerUpClassArray[random], spawnPosition, Quaternion.identity);
         }
 
         private void PlayGamePlaySound()
         {
             if(playerManager.isDead)
             {
-                audioManager.StopSound(101);
-                audioManager.PlaySound(100);
+                Audio.StopSound(101);
+                Audio.PlaySound(100);
                 return;
             }
         }
 
         //Functionalities
-        private void CalculateTotalScore(float delta)
-        {
-            if(playerManager.isDead)
-            {
-                return;
-            }
 
-            float currentWaveFactor = (EnemySpawner.waveCount - 1)/10f;
-            totalScore += Mathf.FloorToInt(delta * scoreTimeMultiplier * currentWaveFactor);
-        }
-
-        public void UpdateTargetsToKill()
+        public bool CompareGameStatus(GamePlayState gamePlayState)
         {
-            if(targetsNeededToKill <= 0)
-            {
-                hasBeenSet = false;
-                SetTargetKillsForMission(enemySpawner.spawnQuantity);
-            }
+            return gamePlayController.CurrentState.Equals(gamePlayState);
         }
 
         public void SetTargetKillsForMission(int numberOfTargets)
@@ -141,14 +108,6 @@ namespace Onion_AI
             }
             hasBeenSet = true;
             targetsNeededToKill = numberOfTargets;
-        }
-
-        private void InitializeBoundaries()
-        {
-            foreach(Boundaries boundary in boundaries)
-            {
-                boundary.Initialize(this);
-            }
         }
     }
 }

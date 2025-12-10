@@ -4,33 +4,23 @@ namespace Onion_AI
 {
     public class Boundaries : MonoBehaviour
     {
-        GameManager gameManager;
-        
         private void OnTriggerEnter2D(Collider2D other)
         {
-            IReleaseFromPool poolReleaser = other.GetComponent<IReleaseFromPool>();
-
-            if(poolReleaser != null)
+            if(other.TryGetComponent<IReleaseFromPool>(out var poolReleaser))
             {
                 poolReleaser.ReleaseFromPool();
+            }
+
+            if (other.CompareTag("PowerUp"))
+            {
+                Destroy(gameObject, 1.0f);
             }
         }
 
         private void OnTriggerStay2D(Collider2D other)
         {
             IReleaseFromPool poolReleaser = other.GetComponentInParent<IReleaseFromPool>();
-
-            if(poolReleaser != null)
-            {
-                poolReleaser.ReleaseFromPool();
-            }
-        }
-
-        //Functionalities
-
-        public void Initialize(GameManager gM)
-        {
-            gameManager = gM;
+            poolReleaser?.ReleaseFromPool();
         }
     }
 }
